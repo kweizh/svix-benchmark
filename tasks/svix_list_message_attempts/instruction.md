@@ -1,0 +1,25 @@
+# List Svix Message Attempts
+
+## Background
+You need to retrieve the delivery attempts for a specific webhook message using the Svix SDK.
+
+## Requirements
+- Create a Node.js script that uses the `svix` SDK to list message attempts for a given application ID and message ID.
+- The script should write the `data` array from the response to a JSON file.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/myproject`.
+2. Install the `svix` package.
+3. Create `index.js` that does the following:
+   - Reads the Svix auth token from the `SVIX_AUTH_TOKEN` environment variable.
+   - Takes `appId` and `msgId` from the command line arguments (`process.argv[2]` and `process.argv[3]`).
+   - Uses `svix.messageAttempt.listByMsg(appId, msgId)` to fetch the attempts.
+   - Writes the `data` array of the response as formatted JSON to `/home/user/myproject/attempts.json`.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Log file: `/home/user/myproject/attempts.json`
+- Use `fs.writeFileSync` to write the JSON file.
+
+## Integrations
+- Svix
