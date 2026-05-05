@@ -1,0 +1,54 @@
+Trial svix_message_retry_verification__TSFYMQh failed: Docker compose command failed for environment svix_message_retry_verification. Command: docker compose --project-name svix_message_retry_verification__tsfymqh --project-directory /home/kw/code/zealt/svix-benchmark/tasks/svix_message_retry_verification/environment -f /home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-base.yaml -f /home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-build.yaml up --detach --wait. Return code: 1. Stdout:  Image svix_message_retry_verification__tsfymqh-main Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 678B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 787B done
+#2 DONE 0.7s
+
+#3 [internal] load metadata for docker.io/library/ubuntu:24.04
+#3 DONE 0.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 2B done
+#4 DONE 0.2s
+
+#5 [1/5] FROM docker.io/library/ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9
+#5 resolve docker.io/library/ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9 0.1s done
+#5 CACHED
+
+#6 [2/5] RUN apt-get update -y &&     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends         curl ca-certificates git python3 python3-pip python3-pytest bash &&     curl -fsSL https://deb.nodesource.com/setup_24.x | bash - &&     apt-get install -y --no-install-recommends nodejs &&     apt-get clean &&     rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [3/4] RUN mkdir -p /home/user && chmod 0755 /home/user
+#7 CACHED
+
+#8 [4/4] RUN mkdir -p /home/user/svix-task
+#8 CACHED
+
+#9 exporting to image
+#9 exporting layers done
+#9 exporting manifest sha256:920d4478f5de31132604a1af1f161ca43f6e6320a267b24522cdc0f5a1aac93a
+#9 exporting manifest sha256:920d4478f5de31132604a1af1f161ca43f6e6320a267b24522cdc0f5a1aac93a 0.2s done
+#9 exporting config sha256:dd5565c55302110f1d0d4bbf7490cc92e2345cbf7c5bdfd12318af56d123e873
+#9 exporting config sha256:dd5565c55302110f1d0d4bbf7490cc92e2345cbf7c5bdfd12318af56d123e873 0.2s done
+#9 exporting attestation manifest sha256:206e864afa805659a5414ad74f008ea7db852845cd4dad62306f9d70881e79c3
+#9 exporting attestation manifest sha256:206e864afa805659a5414ad74f008ea7db852845cd4dad62306f9d70881e79c3 0.6s done
+#9 exporting manifest list sha256:4824480c10e405a28d0a1cd71249574f90f6eb55c638dd0661405eef7e6d66bf
+#9 exporting manifest list sha256:4824480c10e405a28d0a1cd71249574f90f6eb55c638dd0661405eef7e6d66bf 0.4s done
+#9 naming to docker.io/library/svix_message_retry_verification__tsfymqh-main:latest
+#9 naming to docker.io/library/svix_message_retry_verification__tsfymqh-main:latest 0.1s done
+#9 unpacking to docker.io/library/svix_message_retry_verification__tsfymqh-main:latest
+#9 unpacking to docker.io/library/svix_message_retry_verification__tsfymqh-main:latest 0.2s done
+#9 DONE 2.2s
+
+#10 resolving provenance for metadata file
+#10 DONE 0.0s
+ Image svix_message_retry_verification__tsfymqh-main Built 
+ Network svix_message_retry_verification__tsfymqh_default Creating 
+ Network svix_message_retry_verification__tsfymqh_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network svix_message_retry_verification__tsfymqh_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 

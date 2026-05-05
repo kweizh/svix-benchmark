@@ -1,0 +1,48 @@
+Trial svix_fastapi_receiver__zbCUFv3 failed: Docker compose command failed for environment svix_fastapi_receiver. Command: docker compose --project-name svix_fastapi_receiver__zbcufv3 --project-directory /home/kw/code/zealt/svix-benchmark/tasks/svix_fastapi_receiver/environment -f /home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-base.yaml -f /home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-build.yaml up --detach --wait. Return code: 1. Stdout:  Image svix_fastapi_receiver__zbcufv3-main Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 638B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 689B 0.0s done
+#2 DONE 0.2s
+
+#3 [internal] load metadata for docker.io/library/ubuntu:24.04
+#3 DONE 1.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 2B done
+#4 DONE 2.0s
+
+#5 [1/5] FROM docker.io/library/ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9
+#5 resolve docker.io/library/ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9 0.1s done
+#5 CACHED
+
+#6 [2/3] RUN apt-get update -y &&     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends         curl ca-certificates git python3 python3-pip python3-pytest bash &&     apt-get clean &&     rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [3/3] RUN mkdir -p /home/user/svix_project && chmod 0755 /home/user /home/user/svix_project
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 exporting manifest sha256:98531263c4eebd79f0c61a84098875b62f951979e66d5be6afef55ccfc188c14 0.1s done
+#8 exporting config sha256:2948ecf6c4ee438c648ebfbbe175bd041968d812418bc209b71a6286e889f85d 0.1s done
+#8 exporting attestation manifest sha256:2dc1d878d16ded819e314a33871c1bcd680d52c0ec9e4c81e8a07ba9d57cd277
+#8 exporting attestation manifest sha256:2dc1d878d16ded819e314a33871c1bcd680d52c0ec9e4c81e8a07ba9d57cd277 0.6s done
+#8 exporting manifest list sha256:da66b269495aac615ffd11f3671ccc9c5c7be39f932c2cd542f203a0d08c91db
+#8 exporting manifest list sha256:da66b269495aac615ffd11f3671ccc9c5c7be39f932c2cd542f203a0d08c91db 0.5s done
+#8 naming to docker.io/library/svix_fastapi_receiver__zbcufv3-main:latest
+#8 naming to docker.io/library/svix_fastapi_receiver__zbcufv3-main:latest 0.3s done
+#8 unpacking to docker.io/library/svix_fastapi_receiver__zbcufv3-main:latest
+#8 unpacking to docker.io/library/svix_fastapi_receiver__zbcufv3-main:latest 0.4s done
+#8 DONE 2.7s
+
+#9 resolving provenance for metadata file
+#9 DONE 1.1s
+ Image svix_fastapi_receiver__zbcufv3-main Built 
+ Network svix_fastapi_receiver__zbcufv3_default Creating 
+ Network svix_fastapi_receiver__zbcufv3_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network svix_fastapi_receiver__zbcufv3_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 

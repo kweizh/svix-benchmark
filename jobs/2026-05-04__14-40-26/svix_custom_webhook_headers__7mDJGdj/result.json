@@ -1,0 +1,86 @@
+{
+    "id": "2c48efb1-de5a-4889-beac-4da758ad10fd",
+    "task_name": "svix_custom_webhook_headers",
+    "trial_name": "svix_custom_webhook_headers__7mDJGdj",
+    "trial_uri": "file:///home/kw/code/zealt/pochi-harbor/jobs/2026-05-04__14-40-26/svix_custom_webhook_headers__7mDJGdj",
+    "task_id": {
+        "path": "/home/kw/code/zealt/svix-benchmark/tasks/svix_custom_webhook_headers"
+    },
+    "source": "tasks",
+    "task_checksum": "52f78aee95dde657e8551772db21c1b0db75a5056e174134cb6a3536de55f3dc",
+    "config": {
+        "task": {
+            "path": "/home/kw/code/zealt/svix-benchmark/tasks/svix_custom_webhook_headers",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "tasks"
+        },
+        "trial_name": "svix_custom_webhook_headers__7mDJGdj",
+        "trials_dir": "jobs/2026-05-04__14-40-26",
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": null,
+            "import_path": "agents.pochi:Pochi",
+            "model_name": "google/gemini-3-flash",
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "kwargs": {},
+            "env": {}
+        },
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "suppress_override_warnings": false,
+            "mounts_json": null,
+            "env": {},
+            "kwargs": {}
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "job_id": "67b8868f-f83f-476f-aea1-7fc26e49c7c4"
+    },
+    "agent_info": {
+        "name": "pochi",
+        "version": "unknown",
+        "model_info": {
+            "name": "gemini-3-flash",
+            "provider": "google"
+        }
+    },
+    "agent_result": null,
+    "verifier_result": null,
+    "exception_info": {
+        "exception_type": "RuntimeError",
+        "exception_message": "Docker compose command failed for environment svix_custom_webhook_headers. Command: docker compose --project-name svix_custom_webhook_headers__7mdjgdj --project-directory /home/kw/code/zealt/svix-benchmark/tasks/svix_custom_webhook_headers/environment -f /home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-base.yaml -f /home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-build.yaml up --detach --wait. Return code: 1. Stdout:  Image svix_custom_webhook_headers__7mdjgdj-main Building \n#1 [internal] load local bake definitions\n#1 reading from stdin 662B done\n#1 DONE 0.0s\n\n#2 [internal] load build definition from Dockerfile\n#2 transferring dockerfile: 753B done\n#2 DONE 0.1s\n\n#3 [internal] load metadata for docker.io/library/ubuntu:24.04\n#3 DONE 0.5s\n\n#4 [internal] load .dockerignore\n#4 transferring context:\n#4 transferring context: 2B done\n#4 DONE 0.7s\n\n#5 [1/5] FROM docker.io/library/ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9\n#5 resolve docker.io/library/ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9 0.1s done\n#5 CACHED\n\n#6 [4/5] RUN mkdir -p /home/user && chmod 0755 /home/user\n#6 CACHED\n\n#7 [2/5] RUN apt-get update -y &&     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends         curl ca-certificates git python3 python3-pip python3-pytest bash &&     apt-get clean &&     rm -rf /var/lib/apt/lists/*\n#7 CACHED\n\n#8 [3/5] RUN pip3 install --break-system-packages svix\n#8 CACHED\n\n#9 [5/5] RUN mkdir -p /home/user/project &&     chmod 0755 /home/user/project\n#9 CACHED\n\n#10 exporting to image\n#10 exporting layers done\n#10 exporting manifest sha256:8026b37b529e26b5d5e9af78ba08f2961963414a16e7385357e4d00fb991b892 0.1s done\n#10 exporting config sha256:a1373d65289ac41c6a9fe1d011dc0f2f5c42a417dde1e0792859b9b10bf622b3\n#10 exporting config sha256:a1373d65289ac41c6a9fe1d011dc0f2f5c42a417dde1e0792859b9b10bf622b3 0.2s done\n#10 exporting attestation manifest sha256:fd282cb9e81a9a492701ad66da4a8d3b015ec02f7954adca930a630acc2b6914\n#10 exporting attestation manifest sha256:fd282cb9e81a9a492701ad66da4a8d3b015ec02f7954adca930a630acc2b6914 0.6s done\n#10 exporting manifest list sha256:08823fb613a4342470f4015c546c9539fbca285d1a57410c399aad1aa748cea5\n#10 exporting manifest list sha256:08823fb613a4342470f4015c546c9539fbca285d1a57410c399aad1aa748cea5 0.3s done\n#10 naming to docker.io/library/svix_custom_webhook_headers__7mdjgdj-main:latest\n#10 naming to docker.io/library/svix_custom_webhook_headers__7mdjgdj-main:latest 0.1s done\n#10 unpacking to docker.io/library/svix_custom_webhook_headers__7mdjgdj-main:latest\n#10 unpacking to docker.io/library/svix_custom_webhook_headers__7mdjgdj-main:latest 0.1s done\n#10 DONE 2.3s\n\n#11 resolving provenance for metadata file\n#11 DONE 0.0s\n Image svix_custom_webhook_headers__7mdjgdj-main Built \n Network svix_custom_webhook_headers__7mdjgdj_default Creating \n Network svix_custom_webhook_headers__7mdjgdj_default Error Error response from daemon: all predefined address pools have been fully subnetted\nfailed to create network svix_custom_webhook_headers__7mdjgdj_default: Error response from daemon: all predefined address pools have been fully subnetted\n. Stderr: None. ",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 531, in run\n    await self._setup_environment()\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 238, in _setup_environment\n    await self._start_environment_with_retry()\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 193, in async_wrapped\n    return await copy(fn, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 112, in __call__\n    do = await self.iter(retry_state=retry_state)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 157, in iter\n    result = await action(retry_state)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/_utils.py\", line 111, in inner\n    return call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/__init__.py\", line 393, in <lambda>\n    self._add_action_func(lambda rs: rs.outcome.result())\n                                     ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/miniconda3/lib/python3.12/concurrent/futures/_base.py\", line 449, in result\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/miniconda3/lib/python3.12/concurrent/futures/_base.py\", line 401, in __get_result\n    raise self._exception\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/tenacity/asyncio/__init__.py\", line 116, in __call__\n    result = await fn(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 250, in _start_environment_with_retry\n    await asyncio.wait_for(\n  File \"/opt/miniconda3/lib/python3.12/asyncio/tasks.py\", line 520, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker.py\", line 349, in start\n    await self._run_docker_compose_command([\"up\", \"--detach\", \"--wait\"])\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker.py\", line 318, in _run_docker_compose_command\n    raise RuntimeError(\nRuntimeError: Docker compose command failed for environment svix_custom_webhook_headers. Command: docker compose --project-name svix_custom_webhook_headers__7mdjgdj --project-directory /home/kw/code/zealt/svix-benchmark/tasks/svix_custom_webhook_headers/environment -f /home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-base.yaml -f /home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-build.yaml up --detach --wait. Return code: 1. Stdout:  Image svix_custom_webhook_headers__7mdjgdj-main Building \n#1 [internal] load local bake definitions\n#1 reading from stdin 662B done\n#1 DONE 0.0s\n\n#2 [internal] load build definition from Dockerfile\n#2 transferring dockerfile: 753B done\n#2 DONE 0.1s\n\n#3 [internal] load metadata for docker.io/library/ubuntu:24.04\n#3 DONE 0.5s\n\n#4 [internal] load .dockerignore\n#4 transferring context:\n#4 transferring context: 2B done\n#4 DONE 0.7s\n\n#5 [1/5] FROM docker.io/library/ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9\n#5 resolve docker.io/library/ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9 0.1s done\n#5 CACHED\n\n#6 [4/5] RUN mkdir -p /home/user && chmod 0755 /home/user\n#6 CACHED\n\n#7 [2/5] RUN apt-get update -y &&     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends         curl ca-certificates git python3 python3-pip python3-pytest bash &&     apt-get clean &&     rm -rf /var/lib/apt/lists/*\n#7 CACHED\n\n#8 [3/5] RUN pip3 install --break-system-packages svix\n#8 CACHED\n\n#9 [5/5] RUN mkdir -p /home/user/project &&     chmod 0755 /home/user/project\n#9 CACHED\n\n#10 exporting to image\n#10 exporting layers done\n#10 exporting manifest sha256:8026b37b529e26b5d5e9af78ba08f2961963414a16e7385357e4d00fb991b892 0.1s done\n#10 exporting config sha256:a1373d65289ac41c6a9fe1d011dc0f2f5c42a417dde1e0792859b9b10bf622b3\n#10 exporting config sha256:a1373d65289ac41c6a9fe1d011dc0f2f5c42a417dde1e0792859b9b10bf622b3 0.2s done\n#10 exporting attestation manifest sha256:fd282cb9e81a9a492701ad66da4a8d3b015ec02f7954adca930a630acc2b6914\n#10 exporting attestation manifest sha256:fd282cb9e81a9a492701ad66da4a8d3b015ec02f7954adca930a630acc2b6914 0.6s done\n#10 exporting manifest list sha256:08823fb613a4342470f4015c546c9539fbca285d1a57410c399aad1aa748cea5\n#10 exporting manifest list sha256:08823fb613a4342470f4015c546c9539fbca285d1a57410c399aad1aa748cea5 0.3s done\n#10 naming to docker.io/library/svix_custom_webhook_headers__7mdjgdj-main:latest\n#10 naming to docker.io/library/svix_custom_webhook_headers__7mdjgdj-main:latest 0.1s done\n#10 unpacking to docker.io/library/svix_custom_webhook_headers__7mdjgdj-main:latest\n#10 unpacking to docker.io/library/svix_custom_webhook_headers__7mdjgdj-main:latest 0.1s done\n#10 DONE 2.3s\n\n#11 resolving provenance for metadata file\n#11 DONE 0.0s\n Image svix_custom_webhook_headers__7mdjgdj-main Built \n Network svix_custom_webhook_headers__7mdjgdj_default Creating \n Network svix_custom_webhook_headers__7mdjgdj_default Error Error response from daemon: all predefined address pools have been fully subnetted\nfailed to create network svix_custom_webhook_headers__7mdjgdj_default: Error response from daemon: all predefined address pools have been fully subnetted\n. Stderr: None. \n",
+        "occurred_at": "2026-05-04T14:41:51.661017"
+    },
+    "started_at": "2026-05-04T06:41:24.503461Z",
+    "finished_at": "2026-05-04T06:42:08.380052Z",
+    "environment_setup": {
+        "started_at": "2026-05-04T06:41:24.509754Z",
+        "finished_at": "2026-05-04T06:41:51.660046Z"
+    },
+    "agent_setup": null,
+    "agent_execution": null,
+    "verifier": null
+}
