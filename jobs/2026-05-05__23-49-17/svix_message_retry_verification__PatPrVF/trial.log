@@ -1,0 +1,90 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash  && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_message_retry_verification__PatPrVF > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Message Retry Verification
+
+## Background
+Svix handles sending webhooks and automatically retries failed deliveries. You need to write a Node.js script that uses the Svix SDK to create an application, an endpoint that points to a non-existent server, send a message, and verify that the delivery attempt failed and is queued for retry.
+
+## Requirements
+- Initialize a Node.js project in `/home/user/svix-task`.
+- Install the `svix` package.
+- Write a script `index.js` that:
+  1. Initializes the Svix client using the `SVIX_AUTH_TOKEN` environment variable.
+  2. Creates a new Application with a unique name and UID.
+  3. Creates an Endpoint for that application pointing to `http://localhost:9999/webhook` (this server does not exist).
+  4. Sends a message with `eventType: "user.signup"` and a payload of your choice.
+  5. Waits a few seconds, then fetches the message attempts for the sent message.
+  6. Writes the application UID, message ID, and the status of the first attempt to `/home/user/svix-task/output.json`.
+
+## Implementation Guide
+1. `cd /home/user/svix-task` and `npm init -y`.
+2. `npm install svix`.
+3. Create `index.js` following the requirements.
+4. Run the script with `node index.js`.
+
+## Constraints
+- Project path: /home/user/svix-task
+- Output file: /home/user/svix-task/output.json
+- The script must read `SVIX_AUTH_TOKEN` from the environment.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

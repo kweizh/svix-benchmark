@@ -1,0 +1,77 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 13ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 2 items
+
+tests/test_final_state.py FF                                             [100%]
+
+=================================== FAILURES ===================================
+______________________ test_output_file_exists_and_valid _______________________
+
+    def test_output_file_exists_and_valid():
+        assert os.path.isfile(OUTPUT_FILE), f"Output file {OUTPUT_FILE} does not exist."
+        with open(OUTPUT_FILE, "r") as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                pytest.fail(f"Output file {OUTPUT_FILE} is not valid JSON.")
+    
+        # Check for application ID (allow various common naming conventions)
+        app_keys = ["app_uid", "application_uid", "applicationId", "appId", "app_id"]
+        has_app_id = any(k in data for k in app_keys)
+>       assert has_app_id, f"Application UID not found in output.json. Expected one of {app_keys}"
+E       AssertionError: Application UID not found in output.json. Expected one of ['app_uid', 'application_uid', 'applicationId', 'appId', 'app_id']
+E       assert False
+
+tests/test_final_state.py:19: AssertionError
+_____________________ test_message_attempt_failed_via_api ______________________
+
+    def test_message_attempt_failed_via_api():
+        assert os.path.isfile(OUTPUT_FILE), f"Output file {OUTPUT_FILE} does not exist."
+        with open(OUTPUT_FILE, "r") as f:
+            data = json.load(f)
+    
+        app_id = next((data[k] for k in ["app_uid", "application_uid", "applicationId", "appId", "app_id"] if k in data), None)
+        msg_id = next((data[k] for k in ["msg_id", "message_id", "messageId", "msgId"] if k in data), None)
+    
+        token = os.environ.get("SVIX_AUTH_TOKEN")
+        assert token is not None, "SVIX_AUTH_TOKEN environment variable is missing"
+    
+        # Use curl to fetch message attempts
+        cmd = [
+            "curl", "-s",
+            "-H", f"Authorization: Bearer {token}",
+            f"https://api.svix.com/api/v1/app/{app_id}/msg/{msg_id}/attempt/"
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        assert result.returncode == 0, f"curl command failed: {result.stderr}"
+    
+        try:
+            response = json.loads(result.stdout)
+        except json.JSONDecodeError:
+            pytest.fail(f"Failed to parse Svix API response as JSON: {result.stdout}")
+    
+>       assert "data" in response, f"Unexpected API response, missing 'data' field: {response}"
+E       AssertionError: Unexpected API response, missing 'data' field: {'code': 'not_found', 'detail': 'application not found'}
+E       assert 'data' in {'code': 'not_found', 'detail': 'application not found'}
+
+tests/test_final_state.py:51: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_output_file_exists_and_valid - Asserti...
+FAILED tests/test_final_state.py::test_message_attempt_failed_via_api - Asser...
+============================== 2 failed in 1.66s ===============================
