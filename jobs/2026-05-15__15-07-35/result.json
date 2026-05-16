@@ -1,0 +1,42 @@
+{
+  "id": "3357b1b3-9691-4372-a0cd-5a92ec68f0c6",
+  "started_at": "2026-05-15T15:07:37.181208",
+  "finished_at": "2026-05-15T15:17:54.725166",
+  "n_total_trials": 12,
+  "stats": {
+    "n_trials": 12,
+    "n_errors": 0,
+    "evals": {
+      "pochi__gemini-3-flash__svix-tasks": {
+        "n_trials": 12,
+        "n_errors": 0,
+        "metrics": [
+          {
+            "mean": 0.8333333333333334
+          }
+        ],
+        "reward_stats": {
+          "reward": {
+            "0.0": [
+              "svix_custom_webhook_headers__bNyZd2A",
+              "svix_recover_failed_endpoint__G6cVq4X"
+            ],
+            "1.0": [
+              "svix_cancel_message_dispatch__as8P8Mu",
+              "svix_simulate_failure_retry__MXHpTDU",
+              "svix_nestjs_raw_body_parsing__7y96G2e",
+              "svix_endpoint_secret_rotation__J2VisPY",
+              "svix_list_message_attempts__KLPSTtu",
+              "svix_idempotency_duplicate_check__DAXaNk9",
+              "svix_express_raw_body_parsing__eupAVQE",
+              "svix_list_messages_pagination__fpRJ44z",
+              "svix_fastapi_receiver__QoNueNp",
+              "svix_message_retry_verification__5yVEZv9"
+            ]
+          }
+        },
+        "exception_stats": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_fastapi_receiver__cqDrUj9 > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model anthropic/claude-4-6-sonnet --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Webhook Receiver with FastAPI
+
+## Background
+Svix is an enterprise-grade webhooks-as-a-service platform. When receiving webhooks from Svix, it is critical to verify the cryptographic signatures to ensure the payload is authentic and hasn't been tampered with. This task requires you to build a FastAPI webhook receiver that correctly verifies Svix signatures.
+
+## Requirements
+- Create a FastAPI application with a single POST endpoint at `/webhook`.
+- The endpoint must verify incoming Svix webhook signatures using the `svix` Python library.
+- The webhook secret to use is `whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw`.
+- If the signature is valid, return a 204 No Content response.
+- If the signature is invalid (or missing), return a 400 Bad Request response.
+- You must use the raw request body for verification, as parsing it to JSON before verification will cause the signature check to fail.
+
+## Implementation Guide
+1. Initialize a Python project in `/home/user/svix_project`.
+2. Install `fastapi`, `uvicorn`, and `svix`.
+3. Create `main.py` containing the FastAPI application.
+4. Add the `/webhook` endpoint.
+5. Extract the required headers (`svix-id`, `svix-timestamp`, `svix-signature`) and the raw request body.
+6. Use the `svix.Webhook` class to verify the signature.
+7. Handle verification errors properly.
+
+## Constraints
+- Project path: `/home/user/svix_project`
+- Start command: `uvicorn main:app --host 0.0.0.0 --port 8000`
+- Port: 8000
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

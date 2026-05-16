@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778884863.0446992,
+            "stop": 1778884863.0556743
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_script_exists",
+                "status": "passed",
+                "duration": 0.0002845420967787504,
+                "start": 1778884863.048909,
+                "stop": 1778884863.049332,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_output_file_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00030533201061189175,
+                "start": 1778884863.049406,
+                "stop": 1778884863.055522,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_output_file_content():\n>       assert os.path.isfile(OUTPUT_FILE), f\"Output file not found at {OUTPUT_FILE}\"\nE       AssertionError: Output file not found at /home/user/app/output.txt\nE       assert False\nE        +  where False = <function isfile at 0xe50e6d6d0220>('/home/user/app/output.txt')\nE        +    where <function isfile at 0xe50e6d6d0220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:12: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

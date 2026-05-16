@@ -1,0 +1,65 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 1,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778882744.3353806,
+            "stop": 1778882744.74278
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_script_exists",
+                "status": "passed",
+                "duration": 0.0003143750363960862,
+                "start": 1778882744.5828707,
+                "stop": 1778882744.5833366,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_script_execution",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.13949383480940014,
+                "start": 1778882744.5834157,
+                "stop": 1778882744.7395966,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_script_execution():\n        result = subprocess.run(\n            [\"python3\", \"svix_task.py\"],\n            cwd=PROJECT_DIR,\n            capture_output=True,\n            text=True\n        )\n>       assert result.returncode == 0, f\"Script execution failed: {result.stderr}\\n{result.stdout}\"\nE       AssertionError: Script execution failed: Traceback (most recent call last):\nE           File \"/home/user/project/svix_task.py\", line 5, in <module>\nE             from svix.api import ApiException\nE         ImportError: cannot import name 'ApiException' from 'svix.api' (/root/.cache/uv/archive-v0/xpG1tbePTa0oR9CwjmH9Q/lib/python3.12/site-packages/svix/api/__init__.py)\nE         \nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['python3', 'svix_task.py'], returncode=1, stdout='', stderr='Traceback (most recent call last):...m \\'svix.api\\' (/root/.cache/uv/archive-v0/xpG1tbePTa0oR9CwjmH9Q/lib/python3.12/site-packages/svix/api/__init__.py)\\n').returncode\n\ntests/test_final_state.py:21: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_output_json_exists_and_valid",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0003706250572577119,
+                "start": 1778882744.7397351,
+                "stop": 1778882744.7409308,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_output_json_exists_and_valid():\n>       assert os.path.isfile(OUTPUT_JSON), f\"Output file not found at {OUTPUT_JSON}\"\nE       AssertionError: Output file not found at /home/user/project/output.json\nE       assert False\nE        +  where False = <function isfile at 0xf54e51810220>('/home/user/project/output.json')\nE        +    where <function isfile at 0xf54e51810220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:24: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_messages_exist_in_svix",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.000216625165194273,
+                "start": 1778882744.7410035,
+                "stop": 1778882744.742644,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_messages_exist_in_svix():\n>       with open(OUTPUT_JSON, \"r\") as f:\n             ^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/project/output.json'\n\ntests/test_final_state.py:35: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

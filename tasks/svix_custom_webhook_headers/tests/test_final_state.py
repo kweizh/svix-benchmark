@@ -2,7 +2,6 @@ import os
 import subprocess
 import pytest
 from svix.api import Svix
-from svix.internal.openapi_client.models.endpoint_headers_out import EndpointHeadersOut
 
 PROJECT_DIR = "/home/user/project"
 APP_ID_FILE = os.path.join(PROJECT_DIR, "app_id.txt")

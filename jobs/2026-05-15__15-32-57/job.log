@@ -1,0 +1,1114 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_simulate_failure_retry__ZYd2hWD > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Webhook Failure and Manual Retry
+
+## Background
+Svix guarantees reliable webhook delivery by automatically retrying failed requests. However, the automatic retry schedule can take minutes or hours. For immediate recovery, developers can use the Svix API to manually resend failed messages.
+
+## Requirements
+Write a Node.js script `/home/user/project/simulate_retry.js` that demonstrates this failure and manual retry mechanism using the real Svix API and the `svix` CLI.
+
+1. **Local Server**:
+   The script must start an Express server on port 3000 that listens for `POST /webhook`.
+   The server should maintain a global counter of received requests.
+   - For the 1st and 2nd requests, it should respond with HTTP 500 (Internal Server Error) to simulate a failure.
+   - For the 3rd request, it should respond with HTTP 200 (OK).
+
+2. **Svix CLI Tunnel**:
+   The script must spawn the `svix` CLI as a child process to forward webhooks to the local server:
+   `svix listen http://localhost:3000/webhook`
+   It should read the stdout of the `svix listen` process to extract the generated public Play URL (e.g., `https://play.svix.com/in/.../`).
+
+3. **Svix SDK Setup**:
+   Once the public URL is obtained, the script must use the `svix` Node.js SDK (using the `SVIX_AUTH_TOKEN` environment variable) to:
+   - Create a new Application.
+   - Create an Endpoint for that Application, using the public URL obtained from the `svix listen` command.
+   - Send a Message to that Application with any valid JSON payload.
+
+4. **Manual Retry Loop**:
+   After sending the message, the script must monitor the delivery attempts.
+   - Wait for the local server to receive the request and respond with 500.
+   - Use the Svix API (`svix.messageAttempt.listByMsg` or similar) to verify the attempt failed.
+   - Immediately use the Svix API (`svix.messageAttempt.resend`) to manually resend the message to the endpoint.
+   - Repeat this process: wait for the 2nd failure, verify it, and manually resend again.
+   - Wait for the 3rd attempt, which the local server will respond to with 200 (OK).
+
+5. **Execution & Output**:
+   Once the 3rd attempt is successful, the script must immediately write the Application ID and Message ID to a JSON file at `/home/user/project/output.json` in this format:
+   `{ "appId": "app_123...", "msgId": "msg_123..." }`
+   
+   Then, cleanly terminate the Express server and the `svix listen` child process.
+
+## Constraints
+- Project path: `/home/user/project`
+- Output file: `/home/user/project/output.json`
+- Use the `svix` npm package for API interactions.
+- Use the `svix` CLI binary (already installed in the environment) for the tunnel.
+- You have access to the `SVIX_AUTH_TOKEN` environment variable.
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_message_retry_verification__Ap9fG3e > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Message Retry Verification
+
+## Background
+Svix handles sending webhooks and automatically retries failed deliveries. You need to write a Node.js script that uses the Svix SDK to create an application, an endpoint that points to a non-existent server, send a message, and verify that the delivery attempt failed and is queued for retry.
+
+## Requirements
+- Initialize a Node.js project in `/home/user/svix-task`.
+- Install the `svix` package.
+- Write a script `index.js` that:
+  1. Initializes the Svix client using the `SVIX_AUTH_TOKEN` environment variable.
+  2. Creates a new Application with a unique name and UID.
+  3. Creates an Endpoint for that application pointing to `http://localhost:9999/webhook` (this server does not exist).
+  4. Sends a message with `eventType: "user.signup"` and a payload of your choice.
+  5. Waits a few seconds, then fetches the message attempts for the sent message.
+  6. Writes the application UID, message ID, and the status of the first attempt to `/home/user/svix-task/output.json`. The file MUST be a JSON object with exactly these keys: `"app_uid"`, `"msg_id"`, `"status"`.
+
+## Implementation Guide
+1. `cd /home/user/svix-task` and `npm init -y`.
+2. `npm install svix`.
+3. Create `index.js` following the requirements.
+4. Run the script with `node index.js`.
+
+## Constraints
+- Project path: /home/user/svix-task
+- Output file: /home/user/svix-task/output.json
+- The script must read `SVIX_AUTH_TOKEN` from the environment.
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_fastapi_receiver__NeuoPcv > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Webhook Receiver with FastAPI
+
+## Background
+Svix is an enterprise-grade webhooks-as-a-service platform. When receiving webhooks from Svix, it is critical to verify the cryptographic signatures to ensure the payload is authentic and hasn't been tampered with. This task requires you to build a FastAPI webhook receiver that correctly verifies Svix signatures.
+
+## Requirements
+- Create a FastAPI application with a single POST endpoint at `/webhook`.
+- The endpoint must verify incoming Svix webhook signatures using the `svix` Python library.
+- The webhook secret to use is `whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw`.
+- If the signature is valid, return a 204 No Content response.
+- If the signature is invalid (or missing), return a 400 Bad Request response.
+- You must use the raw request body for verification, as parsing it to JSON before verification will cause the signature check to fail.
+
+## Implementation Guide
+1. Initialize a Python project in `/home/user/svix_project`.
+2. Install `fastapi`, `uvicorn`, and `svix`.
+3. Create `main.py` containing the FastAPI application.
+4. Add the `/webhook` endpoint.
+5. Extract the required headers (`svix-id`, `svix-timestamp`, `svix-signature`) and the raw request body.
+6. Use the `svix.Webhook` class to verify the signature.
+7. Handle verification errors properly.
+
+## Constraints
+- Project path: `/home/user/svix_project`
+- Start command: `uvicorn main:app --host 0.0.0.0 --port 8000`
+- Port: 8000
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_cancel_message_dispatch__CHJVEAs > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Message Cancellation Transformation
+
+## Background
+Svix Transformations allow you to modify webhook properties in-flight by writing JavaScript code that runs on the endpoint. One advanced use case is canceling the dispatch of a webhook based on the payload content.
+
+## Requirements
+Write a Node.js script that uses the `svix` SDK to do the following:
+1. Create a new Svix Application named `Transformation App`.
+2. Create an Endpoint for this Application with the URL `https://example.com/webhook`.
+3. Apply a Transformation to the Endpoint. The Transformation must be enabled and contain JavaScript code (`handler` function) that cancels the webhook dispatch (by setting `webhook.cancel = true`) ONLY if the payload contains a property `cancel_me` with the value `true`. If this property is not `true`, it should return the webhook unmodified.
+4. Output the created Application ID and Endpoint ID to a JSON file `output.json`.
+
+## Implementation Guide
+1. Navigate to `/home/user/svix-project`.
+2. Create a script named `setup.js`.
+3. Initialize the Svix client using the `SVIX_AUTH_TOKEN` environment variable.
+4. Use `svix.application.create()` to create the app.
+5. Use `svix.endpoint.create()` to create the endpoint.
+6. Use `svix.endpoint.patchTransformation()` to apply the transformation code and enable it.
+7. Write the `app_id` and `endpoint_id` to `output.json` using `fs.writeFileSync`.
+8. Run your script with `node setup.js`.
+
+## Constraints
+- Project path: `/home/user/svix-project`
+- Log file: `/home/user/svix-project/output.json`
+- Use the `svix` package installed in the project.
+- The `output.json` must be valid JSON with keys `app_id` and `endpoint_id`.
+
+## Integrations
+- Svix (requires SVIX_AUTH_TOKEN environment variable)
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_custom_webhook_headers__qZAGz8q > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Custom Webhook Headers
+
+## Background
+Svix is an enterprise-grade webhooks-as-a-service platform. When sending webhooks to endpoints, you may need to include custom HTTP headers for authentication or routing purposes.
+
+## Requirements
+- Write a Python script `/home/user/project/setup_endpoint.py` that uses the `svix` Python library to:
+  1. Create a new Svix Application named "Custom Header App".
+  2. Create an Endpoint for this application with the URL `https://example.com/webhook/`.
+  3. Configure the endpoint to include a custom header `X-Custom-Auth` with the value `secret-token-123`.
+  4. Save the created application ID to `/home/user/project/app_id.txt` and the endpoint ID to `/home/user/project/endpoint_id.txt`.
+
+## Implementation Guide
+1. Ensure you have `svix` installed (`pip install svix`).
+2. Use the `SVIX_AUTH_TOKEN` environment variable to initialize the Svix client.
+3. Create the application and then the endpoint, passing the headers in the endpoint configuration.
+4. Write the application ID and endpoint ID to the output files.
+
+## Constraints
+- Project path: `/home/user/project`
+- The script must be runnable via `python3 /home/user/project/setup_endpoint.py`.
+- Output files: `/home/user/project/app_id.txt` and `/home/user/project/endpoint_id.txt`
+
+## Integrations
+- None
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_endpoint_secret_rotation__nFsiBxR > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Endpoint Secret Rotation
+
+## Background
+Svix is an enterprise-grade webhooks-as-a-service platform. When managing webhooks, rotating endpoint secrets is a critical security operation. You need to write a script that rotates the secret of a specific Svix endpoint using the official `svix` Node.js SDK.
+
+## Requirements
+- Create a Node.js script named `rotate.js` in `/home/user/project`.
+- The script should use the `svix` npm package.
+- The script must read the Svix authentication token from the `SVIX_AUTH_TOKEN` environment variable.
+- The script must accept exactly three command-line arguments in this order: `appId`, `endpointId`, and `newSecret`.
+- It should rotate the endpoint's secret to the provided `newSecret`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/project` and install `svix`.
+2. Create `rotate.js`.
+3. Instantiate the `Svix` client using `process.env.SVIX_AUTH_TOKEN`.
+4. Read the command-line arguments: `process.argv[2]` (appId), `process.argv[3]` (endpointId), and `process.argv[4]` (newSecret).
+5. Call the appropriate method on `svix.endpoint` to rotate the secret, passing `{ key: newSecret }` as the payload.
+
+## Constraints
+- Project path: `/home/user/project`
+- The script must be executable via `node rotate.js <appId> <endpointId> <newSecret>`.
+- Do not hardcode the auth token or the IDs.
+EOF
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_nestjs_raw_body_parsing__jZzEprq > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Webhook Verification in NestJS
+
+## Background
+Svix is an enterprise-grade webhooks-as-a-service platform. To verify incoming webhooks securely, the Svix SDK requires the original, unparsed raw body of the HTTP request along with the headers. However, web frameworks like NestJS automatically parse JSON bodies, making it difficult to retrieve the raw body needed for cryptographic signature verification.
+
+## Requirements
+- You have a basic NestJS project at `/home/user/svix-nestjs-app`.
+- Create a POST endpoint `/webhook`.
+- The endpoint must use the `svix` Node.js SDK to verify incoming webhook payloads.
+- The endpoint must correctly handle raw body parsing to allow `Webhook.verify(payload, headers)` to succeed.
+- The endpoint secret is `whsec_MfKQ9r8GffUjCNNdXbn5O6vTmQxOQ9XQ`.
+- If the signature is valid, return an HTTP 200 OK.
+- If the signature is invalid, return an HTTP 400 Bad Request.
+
+## Implementation Guide
+1. Go to `/home/user/svix-nestjs-app`.
+2. Install the `svix` SDK.
+3. Configure NestJS to preserve the raw body for the `/webhook` route (e.g., using middleware or modifying the main bootstrap configuration to store the raw body).
+4. Implement the `/webhook` endpoint in the controller.
+5. Use the `svix` SDK's `Webhook` class with the secret `whsec_MfKQ9r8GffUjCNNdXbn5O6vTmQxOQ9XQ` to verify the `svix-id`, `svix-timestamp`, and `svix-signature` headers against the raw body.
+
+## Constraints
+- Project path: `/home/user/svix-nestjs-app`
+- Start command: `npm run start`
+- Port: 3000
+- The endpoint must be accessible at `POST http://localhost:3000/webhook`.
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_list_message_attempts__w84uWf9 > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# List Svix Message Attempts
+
+## Background
+You need to retrieve the delivery attempts for a specific webhook message using the Svix SDK.
+
+## Requirements
+- Create a Node.js script that uses the `svix` SDK to list message attempts for a given application ID and message ID.
+- The script should write the `data` array from the response to a JSON file.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/myproject`.
+2. Install the `svix` package.
+3. Create `index.js` that does the following:
+   - Reads the Svix auth token from the `SVIX_AUTH_TOKEN` environment variable.
+   - Takes `appId` and `msgId` from the command line arguments (`process.argv[2]` and `process.argv[3]`).
+   - Uses `svix.messageAttempt.listByMsg(appId, msgId)` to fetch the attempts.
+   - Writes the `data` array of the response as formatted JSON to `/home/user/myproject/attempts.json`.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Log file: `/home/user/myproject/attempts.json`
+- Use `fs.writeFileSync` to write the JSON file.
+
+## Integrations
+- Svix
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_recover_failed_endpoint__9GuNG4s > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Recover a Failed Webhook Endpoint with Svix
+
+## Background
+You are managing webhooks for a service using Svix. You need to write a script that sets up a new application, provisions an endpoint that is initially disabled (simulating a failed state), updates it to a working URL, and triggers a recovery.
+
+## Requirements
+Write a Python script `recover.py` that uses the `svix` SDK to:
+1. Initialize the Svix client using the `SVIX_AUTH_TOKEN` environment variable.
+2. Create a new application named `RecoverApp`.
+3. Create a new endpoint for this application with the URL `http://failing-endpoint.local/webhook` and set it to be disabled (`disabled=True`).
+4. Update this endpoint to:
+   - Change its URL to `http://working-endpoint.local/webhook`.
+   - Re-enable it (`disabled=False`).
+5. Recover the failed messages for this endpoint since 24 hours ago (you can use `datetime.now(timezone.utc) - timedelta(hours=24)` for the `since` parameter in the recover request).
+
+## Implementation Guide
+1. Install the `svix` package if it's not already installed.
+2. Create `/home/user/myproject/recover.py`.
+3. Use `svix_client.application.create(ApplicationIn(name="RecoverApp"))` to create the app.
+4. Use `svix_client.endpoint.create(app_id, EndpointIn(url="http://failing-endpoint.local/webhook", disabled=True))`.
+5. Use `svix_client.endpoint.update(app_id, endpoint_id, EndpointUpdate(url="http://working-endpoint.local/webhook", disabled=False))` to update the URL and `disabled` status.
+6. Use `svix_client.endpoint.recover(app_id, endpoint_id, RecoverIn(since=...))` to recover messages.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- The script must be executable by running `python recover.py`.
+- You must use the `svix` Python library.
+
+## Integrations
+- Svix
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_idempotency_duplicate_check__wLnyBxE > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Idempotency Duplicate Check
+
+## Background
+When sending webhooks, network failures can cause retries, which might lead to duplicate messages if not handled correctly. Svix supports idempotency keys to ensure that a message is only processed once even if the request is retried.
+
+## Requirements
+Write a Node.js script `send_message.js` that demonstrates Svix's idempotency feature by sending a duplicate message and verifying that only one message is actually created.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install the `svix` package.
+3. Create `send_message.js` that:
+   - Initializes the `Svix` client using the `SVIX_TOKEN` environment variable.
+   - Creates a new application with the name `Idempotency Test`.
+   - Sends a message to this application with `eventType: "user.signup"` and `payload: { "id": "user_123" }`.
+   - Crucially, pass an `idempotencyKey` of `"my-unique-key-123"` in the options object when creating the message.
+   - Immediately send the exact same message a second time, using the exact same `idempotencyKey`.
+   - Fetch the list of messages for the application and print the total count of messages to a file `output.txt`.
+
+## Constraints
+- Project path: `/home/user/app`
+- The output file must be `/home/user/app/output.txt` and contain only the number `1` (since the second request should be safely ignored due to the idempotency key).
+- Use the `svix` npm package.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_express_raw_body_parsing__EchGXrY > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Fix Svix Webhook Verification in Express
+
+## Background
+Svix requires the raw, unparsed request body to verify webhook signatures. An existing Express.js application has `app.use(express.json())` configured globally, which parses the body into a JSON object and causes the Svix webhook verification to fail.
+
+## Requirements
+- Modify the Express server to properly handle Svix webhooks on the `/webhook` endpoint.
+- The webhook verification must succeed using the `svix` SDK.
+- The server must still be able to parse JSON bodies for other endpoints.
+
+## Implementation Guide
+1. The project is located at `/home/user/app`.
+2. Review `server.js` which currently fails to verify Svix webhooks.
+3. Update the `/webhook` route to use `express.raw({ type: 'application/json' })` or `body-parser.raw` to ensure `req.body` remains a raw string/buffer for this specific route, or use middleware to capture the raw body.
+4. Ensure the webhook verification logic in the route works correctly with the raw body.
+
+## Constraints
+- Project path: /home/user/app
+- Start command: `npm start`
+- Port: 3000
+- Do not break JSON parsing for other endpoints.
+
+## Integrations
+- None
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_list_messages_pagination__kUKje8M > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix List Messages Pagination
+
+## Background
+Svix is an enterprise-grade webhooks-as-a-service platform. When retrieving messages for an application, the results are paginated. You need to write a Python script that sets up a test application, sends several messages, and then fetches all of them using pagination.
+
+## Requirements
+- Write a Python script `/home/user/project/svix_task.py`.
+- The script must initialize the `Svix` client using the `SVIX_API_KEY` environment variable.
+- The script must create a new application with the UID `test-app-pagination`. If an application with this UID already exists, the script must gracefully handle it (e.g., by deleting and recreating it, or just proceeding to use it).
+- The script must create 5 messages for this application. You can use any valid payload and a dummy event type like `user.signup` (you may need to create the event type first if Svix requires it, or just send the message if event types are auto-created/optional depending on your environment. Actually, Svix requires event types to be created, so create an event type `user.signup` first).
+- After creating the 5 messages, the script must fetch all messages for the application `test-app-pagination`.
+- You MUST use `limit=2` in the `svix.message.list` API call to force pagination.
+- Iterate through the pages using the `iterator` returned in each response until all messages are fetched.
+- Extract the `id` of each fetched message and save the complete list of message IDs as a JSON array to `/home/user/project/output.json`.
+
+## Implementation Guide
+1. Initialize `Svix(os.environ["SVIX_API_KEY"])`.
+2. Create application: `svix.application.create({"name": "Test App", "uid": "test-app-pagination"})`.
+3. Create event type: `svix.event_type.create({"name": "user.signup", "description": "Test"})` (ignore if it already exists).
+4. Send 5 messages using `svix.message.create("test-app-pagination", {"eventType": "user.signup", "payload": {"test": i}})`.
+5. Call `svix.message.list("test-app-pagination", limit=2)`.
+6. Keep track of the message IDs.
+7. If the response has an `iterator`, pass it to the next `list` call as `iterator=response.iterator`.
+8. Write the list of IDs to `/home/user/project/output.json`.
+
+## Constraints
+- Project path: `/home/user/project`
+- Output file: `/home/user/project/output.json`
+- Log file: `/home/user/project/output.log`
+- The `SVIX_API_KEY` environment variable is available in the environment.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.

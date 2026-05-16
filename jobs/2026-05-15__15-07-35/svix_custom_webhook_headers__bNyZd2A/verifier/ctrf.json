@@ -1,0 +1,44 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 0,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778883014.6324668,
+            "stop": 1778883015.5616102
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_script_ran_and_output_files_exist",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.6132485701236874,
+                "start": 1778883014.9302328,
+                "stop": 1778883015.5599902,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_script_ran_and_output_files_exist():\n        # Run the setup script\n        result = subprocess.run([\"python3\", \"setup_endpoint.py\"], cwd=PROJECT_DIR, capture_output=True, text=True)\n>       assert result.returncode == 0, f\"Script failed with output: {result.stderr}\"\nE       AssertionError: Script failed with output: \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['python3', 'setup_endpoint.py'], returncode=1, stdout=\"Created Application: app_3DmMueHb3nJ5mJ0... one event type filter must be specified', type='value_error', additional_properties={}, status_code=0)]\\n\", stderr='').returncode\n\ntests/test_final_state.py:13: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_endpoint_configuration",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00043691694736480713,
+                "start": 1778883015.5600922,
+                "stop": 1778883015.561396,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_endpoint_configuration():\n        # Read IDs\n>       with open(APP_ID_FILE, \"r\") as f:\n             ^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/project/app_id.txt'\n\ntests/test_final_state.py:20: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

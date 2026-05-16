@@ -1,0 +1,52 @@
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+   Building standardwebhooks==1.0.1
+Downloading pygments (1.2MiB)
+Downloading pydantic-core (1.9MiB)
+ Downloading pygments
+ Downloading pydantic-core
+      Built standardwebhooks==1.0.1
+Installed 27 packages in 11ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: anyio-4.13.0, json-ctrf-0.3.5
+collected 2 items
+
+tests/test_final_state.py FF                                             [100%]
+
+=================================== FAILURES ===================================
+______________________ test_output_file_exists_and_valid _______________________
+
+    def test_output_file_exists_and_valid():
+>       assert os.path.isfile(OUTPUT_FILE), f"Output file {OUTPUT_FILE} does not exist."
+E       AssertionError: Output file /home/user/project/output.json does not exist.
+E       assert False
+E        +  where False = <function isfile at 0xfcd208390220>('/home/user/project/output.json')
+E        +    where <function isfile at 0xfcd208390220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+tests/test_final_state.py:10: AssertionError
+__________________________ test_svix_message_attempts __________________________
+
+    def test_svix_message_attempts():
+        assert "SVIX_AUTH_TOKEN" in os.environ, "SVIX_AUTH_TOKEN environment variable is missing in the verifier environment."
+    
+>       with open(OUTPUT_FILE, "r") as f:
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/project/output.json'
+
+tests/test_final_state.py:23: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_output_file_exists_and_valid - Asserti...
+FAILED tests/test_final_state.py::test_svix_message_attempts - FileNotFoundEr...
+============================== 2 failed in 0.28s ===============================

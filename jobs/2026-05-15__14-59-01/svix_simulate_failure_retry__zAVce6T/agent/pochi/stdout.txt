@@ -1,0 +1,22 @@
+- Initializing MCP connections...
+You
+# Preserving your work Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable. --- # Svix Webhook Failure and Manual Retry ## Background Svix guarantees reliable webhook delivery by automatically retrying failed requests. However, the automatic retry schedule can take minutes or hours. For immediate recovery, developers can use the Svix API to manually resend failed messages. ## Requirements Write a Node.js script `/home/user/project/simulate_retry.js` that demonstrates this failure and manual retry mechanism using the real Svix API and the `svix` CLI. 1. **Local Server**: The script must start an Express server on port 3000 that listens for `POST /webhook`. The server should maintain a global counter of received requests. - For the 1st and 2nd requests, it should respond with HTTP 500 (Internal Server Error) to simulate a failure. - For the 3rd request, it should respond with HTTP 200 (OK). 2. **Svix CLI Tunnel**: The script must spawn the `svix` CLI as a child process to forward webhooks to the local server: `svix listen http://localhost:3000/webhook` It should read the stdout of the `svix listen` process to extract the generated public Play URL (e.g., `https://play.svix.com/in/.../`). 3. **Svix SDK Setup**: Once the public URL is obtained, the script must use the `svix` Node.js SDK (using the `SVIX_AUTH_TOKEN` environment variable) to: - Create a new Application. - Create an Endpoint for that Application, using the public URL obtained from the `svix listen` command. - Send a Message to that Application with any valid JSON payload. 4. **Manual Retry Loop**: After sending the message, the script must monitor the delivery attempts. - Wait for the local server to receive the request and respond with 500. - Use the Svix API (`svix.messageAttempt.listByMsg` or similar) to verify the attempt failed. - Immediately use the Svix API (`svix.messageAttempt.resend`) to manually resend the message to the endpoint. - Repeat this process: wait for the 2nd failure, verify it, and manually resend again. - Wait for the 3rd attempt, which the local server will respond to with 200 (OK). 5. **Execution & Output**: Once the 3rd attempt is successful, the script must immediately write the Application ID and Message ID to a JSON file at `/home/user/project/output.json` in this format: `{ "appId": "app_123...", "msgId": "msg_123..." }` Then, cleanly terminate the Express server and the `svix listen` child process. ## Constraints - Project path: `/home/user/project` - Output file: `/home/user/project/output.json` - Use the `svix` npm package for API interactions. - Use the `svix` CLI binary (already installed in the environment) for the tunnel. - You have access to the `SVIX_AUTH_TOKEN` environment variable.   
+
+Pochi
+💭 Thinking for 118 characters   
+📂 Listing files in /home/user/project ✔ 
+💭 Thinking for 0 characters   
+📖 Reading /home/user/project/package.json ✔ 
+💭 Thinking for 249 characters   
+📋 Updating todo list (2 items) ✔ 
+💭 Thinking for 439 characters   
+💭 Thinking for 249 characters   
+✏️  Writing /home/user/project/simulate_retry.js ✔ 
+💭 Thinking for 147 characters   
+✏️  Writing /logs/artifacts/simulate_retry.js ✔ 
+💭 Thinking for 0 characters   
+📋 Updating todo list (2 items) ✔ 
+💭 Thinking for 217 characters   
+🎉 Task Completed
+Created /home/user/project/simulate_retry.js implementing the Express failure simulation, svix listen tunnel parsing, Svix SDK app/endpoint/message creation, manual resend loop, and output.json write/cleanup. Saved a copy to /logs/artifacts/simulate_retry.js. Ensure the svix and express npm packages are installed before running the script.   
+  

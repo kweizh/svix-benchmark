@@ -1,0 +1,21 @@
+Application test-app-pagination already exists.
+Event type user.signup already exists.
+Creating 5 messages...
+Created message 1/5: msg_3DmNhiaVaU79YJ8vJBQD45dd2vH
+Created message 2/5: msg_3DmNhk1B22NwDgkM0de6tpNaKKd
+Created message 3/5: msg_3DmNhlbMDnYYRKNRXUaD9OSmSy7
+Created message 4/5: msg_3DmNhnQdfzpRgyVoq9gT94290et
+Created message 5/5: msg_3DmNhota3ObcabvtMVxSLcu0sfv
+Waiting 10 seconds for messages to be indexed...
+Fetching messages with limit=2...
+Page 1: Fetched 2 messages.
+Page 2: Fetched 2 messages.
+Page 3: Fetched 2 messages.
+Page 4: Fetched 2 messages.
+Page 5: Fetched 2 messages.
+Page 6: Fetched 2 messages.
+Page 7: Fetched 2 messages.
+Page 8: Fetched 1 messages.
+Page 9: Fetched 0 messages.
+Total fetched messages: 15
+Saved message IDs to /home/user/project/output.json

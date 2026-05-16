@@ -1,0 +1,66 @@
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+   Building standardwebhooks==1.0.1
+Downloading pygments (1.2MiB)
+Downloading pydantic-core (1.9MiB)
+ Downloading pygments
+      Built standardwebhooks==1.0.1
+ Downloading pydantic-core
+Installed 27 packages in 30ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: anyio-4.13.0, json-ctrf-0.3.5
+collected 2 items
+
+tests/test_final_state.py FF                                             [100%]
+
+=================================== FAILURES ===================================
+____________________ test_script_ran_and_output_files_exist ____________________
+
+    def test_script_ran_and_output_files_exist():
+        # Run the setup script
+        result = subprocess.run(["python3", "setup_endpoint.py"], cwd=PROJECT_DIR, capture_output=True, text=True)
+>       assert result.returncode == 0, f"Script failed with output: {result.stderr}"
+E       AssertionError: Script failed with output: Traceback (most recent call last):
+E           File "/home/user/project/setup_endpoint.py", line 39, in <module>
+E             main()
+E           File "/home/user/project/setup_endpoint.py", line 25, in main
+E             endpoint_out = svix.endpoint.create(app_id, endpoint_in)
+E                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/root/.cache/uv/archive-v0/wICAXWsLqa6QXV7P03gsN/lib/python3.12/site-packages/svix/api/endpoint.py", line 548, in create
+E             response = self._request_sync(
+E                        ^^^^^^^^^^^^^^^^^^^
+E           File "/root/.cache/uv/archive-v0/wICAXWsLqa6QXV7P03gsN/lib/python3.12/site-packages/svix/api/common.py", line 201, in _request_sync
+E             return _filter_response_for_errors_response(response)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/root/.cache/uv/archive-v0/wICAXWsLqa6QXV7P03gsN/lib/python3.12/site-packages/svix/api/common.py", line 209, in _filter_response_for_errors_response
+E             raise HTTPValidationError.init_exception(
+E         svix.api.errors.http_validation_error.HTTPValidationError: HTTP Validation Error: [ValidationError(loc=['body', 'filterTypes'], msg='At least one event type filter must be specified', type='value_error', additional_properties={}, status_code=0)]
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python3', 'setup_endpoint.py'], returncode=1, stdout='', stderr='Traceback (most recent call l...At least one event type filter must be specified\', type=\'value_error\', additional_properties={}, status_code=0)]\n').returncode
+
+tests/test_final_state.py:13: AssertionError
+_________________________ test_endpoint_configuration __________________________
+
+    def test_endpoint_configuration():
+        # Read IDs
+>       with open(APP_ID_FILE, "r") as f:
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/project/app_id.txt'
+
+tests/test_final_state.py:20: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_script_ran_and_output_files_exist - As...
+FAILED tests/test_final_state.py::test_endpoint_configuration - FileNotFoundE...
+============================== 2 failed in 0.83s ===============================

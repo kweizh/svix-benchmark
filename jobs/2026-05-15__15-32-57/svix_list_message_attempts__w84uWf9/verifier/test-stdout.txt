@@ -1,0 +1,73 @@
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+   Building standardwebhooks==1.0.1
+Downloading pygments (1.2MiB)
+Downloading pydantic-core (1.9MiB)
+ Downloading pygments
+      Built standardwebhooks==1.0.1
+ Downloading pydantic-core
+Installed 27 packages in 23ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: anyio-4.13.0, json-ctrf-0.3.5
+collected 2 items
+
+tests/test_final_state.py FF                                             [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_script_execution _____________________________
+
+setup_svix = ('app_3DmQNt0Ui1fLIXa54fexC5Y54zV', 'msg_3DmQNvdBNgmLHZm19cDCyERTpPT')
+
+    def test_script_execution(setup_svix):
+        app_id, msg_id = setup_svix
+    
+        # Wait for the webhook to be attempted (Svix indexing is eventually consistent)
+        import time
+        time.sleep(10)
+    
+        # Run the user's script
+        result = subprocess.run(
+            ["node", "index.js", app_id, msg_id],
+            cwd=PROJECT_DIR,
+            capture_output=True,
+            text=True
+        )
+    
+>       assert result.returncode == 0, f"Node script failed: {result.stderr}"
+E       AssertionError: Node script failed: Error fetching message attempts: HTTP-Code: 404
+E         Headers: {}
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['node', 'index.js', 'app_3DmQNt0Ui1fLIXa54fexC5Y54zV', 'msg_3DmQNvdBNgmLHZm19cDCyERTpPT'], returncode=1, stdout='', stderr='Error fetching message attempts: HTTP-Code: 404\nHeaders: {}\n').returncode
+
+tests/test_final_state.py:54: AssertionError
+______________________ test_output_file_exists_and_valid _______________________
+
+setup_svix = ('app_3DmQNt0Ui1fLIXa54fexC5Y54zV', 'msg_3DmQNvdBNgmLHZm19cDCyERTpPT')
+
+    def test_output_file_exists_and_valid(setup_svix):
+        app_id, msg_id = setup_svix
+    
+>       assert os.path.isfile(OUTPUT_FILE), f"Output file {OUTPUT_FILE} does not exist."
+E       AssertionError: Output file /home/user/myproject/attempts.json does not exist.
+E       assert False
+E        +  where False = <function isfile at 0xf6dc3a4f0220>('/home/user/myproject/attempts.json')
+E        +    where <function isfile at 0xf6dc3a4f0220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+tests/test_final_state.py:59: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_script_execution - AssertionError: Nod...
+FAILED tests/test_final_state.py::test_output_file_exists_and_valid - Asserti...
+============================== 2 failed in 11.44s ==============================

@@ -1,0 +1,44 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 0,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778885384.5560083,
+            "stop": 1778885385.3889198
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_script_ran_and_output_files_exist",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.5556487989379093,
+                "start": 1778885384.8142974,
+                "stop": 1778885385.3861895,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_script_ran_and_output_files_exist():\n        # Run the setup script\n        result = subprocess.run([\"python3\", \"setup_endpoint.py\"], cwd=PROJECT_DIR, capture_output=True, text=True)\n>       assert result.returncode == 0, f\"Script failed with output: {result.stderr}\"\nE       AssertionError: Script failed with output: Traceback (most recent call last):\nE           File \"/home/user/project/setup_endpoint.py\", line 39, in <module>\nE             main()\nE           File \"/home/user/project/setup_endpoint.py\", line 25, in main\nE             endpoint_out = svix.endpoint.create(app_id, endpoint_in)\nE                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           File \"/root/.cache/uv/archive-v0/wICAXWsLqa6QXV7P03gsN/lib/python3.12/site-packages/svix/api/endpoint.py\", line 548, in create\nE             response = self._request_sync(\nE                        ^^^^^^^^^^^^^^^^^^^\nE           File \"/root/.cache/uv/archive-v0/wICAXWsLqa6QXV7P03gsN/lib/python3.12/site-packages/svix/api/common.py\", line 201, in _request_sync\nE             return _filter_response_for_errors_response(response)\nE                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE           File \"/root/.cache/uv/archive-v0/wICAXWsLqa6QXV7P03gsN/lib/python3.12/site-packages/svix/api/common.py\", line 209, in _filter_response_for_errors_response\nE             raise HTTPValidationError.init_exception(\nE         svix.api.errors.http_validation_error.HTTPValidationError: HTTP Validation Error: [ValidationError(loc=['body', 'filterTypes'], msg='At least one event type filter must be specified', type='value_error', additional_properties={}, status_code=0)]\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['python3', 'setup_endpoint.py'], returncode=1, stdout='', stderr='Traceback (most recent call l...At least one event type filter must be specified\\', type=\\'value_error\\', additional_properties={}, status_code=0)]\\n').returncode\n\ntests/test_final_state.py:13: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_endpoint_configuration",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0015280329389497638,
+                "start": 1778885385.38631,
+                "stop": 1778885385.3887272,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_endpoint_configuration():\n        # Read IDs\n>       with open(APP_ID_FILE, \"r\") as f:\n             ^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/project/app_id.txt'\n\ntests/test_final_state.py:20: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 0,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778884727.5071995,
+            "stop": 1778884738.943637
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_script_execution",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 10.927213488030247,
+                "start": 1778884727.8153574,
+                "stop": 1778884738.7601516,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "setup_svix = ('app_3DmQNt0Ui1fLIXa54fexC5Y54zV', 'msg_3DmQNvdBNgmLHZm19cDCyERTpPT')\n\n    def test_script_execution(setup_svix):\n        app_id, msg_id = setup_svix\n    \n        # Wait for the webhook to be attempted (Svix indexing is eventually consistent)\n        import time\n        time.sleep(10)\n    \n        # Run the user's script\n        result = subprocess.run(\n            [\"node\", \"index.js\", app_id, msg_id],\n            cwd=PROJECT_DIR,\n            capture_output=True,\n            text=True\n        )\n    \n>       assert result.returncode == 0, f\"Node script failed: {result.stderr}\"\nE       AssertionError: Node script failed: Error fetching message attempts: HTTP-Code: 404\nE         Headers: {}\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['node', 'index.js', 'app_3DmQNt0Ui1fLIXa54fexC5Y54zV', 'msg_3DmQNvdBNgmLHZm19cDCyERTpPT'], returncode=1, stdout='', stderr='Error fetching message attempts: HTTP-Code: 404\\nHeaders: {}\\n').returncode\n\ntests/test_final_state.py:54: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_output_file_exists_and_valid",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.18182099610567093,
+                "start": 1778884738.7602684,
+                "stop": 1778884738.9431155,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "setup_svix = ('app_3DmQNt0Ui1fLIXa54fexC5Y54zV', 'msg_3DmQNvdBNgmLHZm19cDCyERTpPT')\n\n    def test_output_file_exists_and_valid(setup_svix):\n        app_id, msg_id = setup_svix\n    \n>       assert os.path.isfile(OUTPUT_FILE), f\"Output file {OUTPUT_FILE} does not exist.\"\nE       AssertionError: Output file /home/user/myproject/attempts.json does not exist.\nE       assert False\nE        +  where False = <function isfile at 0xf6dc3a4f0220>('/home/user/myproject/attempts.json')\nE        +    where <function isfile at 0xf6dc3a4f0220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:59: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

@@ -1,0 +1,87 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s -- pochi-v0.6.8 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo svix_idempotency_duplicate_check__wLnyBxE > /logs/artifacts/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.6": {
+          "name": "kimi-K2.6"
+        },
+        "deepseek-ai/DeepSeek-V4-Pro": {
+          "name": "DeepSeek-V4-Pro"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: mkdir -p /logs/artifacts
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Preserving your work
+
+Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable.
+
+---
+
+# Svix Idempotency Duplicate Check
+
+## Background
+When sending webhooks, network failures can cause retries, which might lead to duplicate messages if not handled correctly. Svix supports idempotency keys to ensure that a message is only processed once even if the request is retried.
+
+## Requirements
+Write a Node.js script `send_message.js` that demonstrates Svix's idempotency feature by sending a duplicate message and verifying that only one message is actually created.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install the `svix` package.
+3. Create `send_message.js` that:
+   - Initializes the `Svix` client using the `SVIX_TOKEN` environment variable.
+   - Creates a new application with the name `Idempotency Test`.
+   - Sends a message to this application with `eventType: "user.signup"` and `payload: { "id": "user_123" }`.
+   - Crucially, pass an `idempotencyKey` of `"my-unique-key-123"` in the options object when creating the message.
+   - Immediately send the exact same message a second time, using the exact same `idempotencyKey`.
+   - Fetch the list of messages for the application and print the total count of messages to a file `output.txt`.
+
+## Constraints
+- Project path: `/home/user/app`
+- The output file must be `/home/user/app/output.txt` and contain only the number `1` (since the second request should be safely ignored due to the idempotency key).
+- Use the `svix` npm package.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

@@ -1,0 +1,49 @@
+2026-05-15 22:27:02,812 [INFO] Svix client initialised.
+2026-05-15 22:27:02,812 [INFO] Creating application with UID 'test-app-pagination'...
+2026-05-15 22:27:02,999 [INFO] HTTP Request: POST https://api.us.svix.com/api/v1/app "HTTP/1.1 409 Conflict"
+2026-05-15 22:27:02,999 [WARNING] Could not create application (HTTP Error (conflict): An application with that id or uid already exists). Attempting to fetch existing one.
+2026-05-15 22:27:03,201 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination "HTTP/1.1 200 OK"
+2026-05-15 22:27:03,203 [INFO] Fetched existing application: id=app_3DmNesKdSuWWuX73S4juHOU9uLM uid=test-app-pagination
+2026-05-15 22:27:03,203 [INFO] Creating event type 'user.signup'...
+2026-05-15 22:27:03,438 [INFO] HTTP Request: POST https://api.us.svix.com/api/v1/event-type "HTTP/1.1 409 Conflict"
+2026-05-15 22:27:03,438 [INFO] Event type may already exist (ignored): HTTP Error (event_type_exists): An event_type with this name already exists
+2026-05-15 22:27:03,439 [INFO] Sending message 1/5...
+2026-05-15 22:27:03,624 [INFO] HTTP Request: POST https://api.us.svix.com/api/v1/app/test-app-pagination/msg "HTTP/1.1 202 Accepted"
+2026-05-15 22:27:03,626 [INFO]   Message sent: id=msg_3DmOxM8g3A5Wt3WVxay1N4cjUaN
+2026-05-15 22:27:03,626 [INFO] Sending message 2/5...
+2026-05-15 22:27:03,909 [INFO] HTTP Request: POST https://api.us.svix.com/api/v1/app/test-app-pagination/msg "HTTP/1.1 202 Accepted"
+2026-05-15 22:27:03,911 [INFO]   Message sent: id=msg_3DmOxNeOhdM5eyibsd2zTFKva8d
+2026-05-15 22:27:03,912 [INFO] Sending message 3/5...
+2026-05-15 22:27:04,143 [INFO] HTTP Request: POST https://api.us.svix.com/api/v1/app/test-app-pagination/msg "HTTP/1.1 202 Accepted"
+2026-05-15 22:27:04,145 [INFO]   Message sent: id=msg_3DmOxQGsHn1DvhHNaqQp4G7Vd9z
+2026-05-15 22:27:04,145 [INFO] Sending message 4/5...
+2026-05-15 22:27:04,330 [INFO] HTTP Request: POST https://api.us.svix.com/api/v1/app/test-app-pagination/msg "HTTP/1.1 202 Accepted"
+2026-05-15 22:27:04,332 [INFO]   Message sent: id=msg_3DmOxRiIC8gnZrSQtAkD3v26jsd
+2026-05-15 22:27:04,333 [INFO] Sending message 5/5...
+2026-05-15 22:27:04,573 [INFO] HTTP Request: POST https://api.us.svix.com/api/v1/app/test-app-pagination/msg "HTTP/1.1 202 Accepted"
+2026-05-15 22:27:04,575 [INFO]   Message sent: id=msg_3DmOxTXfy0MAhJKiQpsvhjiaWsh
+2026-05-15 22:27:04,576 [INFO] All 5 messages sent: ['msg_3DmOxM8g3A5Wt3WVxay1N4cjUaN', 'msg_3DmOxNeOhdM5eyibsd2zTFKva8d', 'msg_3DmOxQGsHn1DvhHNaqQp4G7Vd9z', 'msg_3DmOxRiIC8gnZrSQtAkD3v26jsd', 'msg_3DmOxTXfy0MAhJKiQpsvhjiaWsh']
+2026-05-15 22:27:04,576 [INFO] Fetching messages with limit=2 (paginated)...
+2026-05-15 22:27:04,782 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2 "HTTP/1.1 200 OK"
+2026-05-15 22:27:04,784 [INFO]   Page 1: fetched 2 message(s) ['msg_3DmNmvQRkEXOfb1dUAvULiToOEx', 'msg_3DmNmtIOWvAkC9Dz1yFT0clph0x']  done=False  iterator=msg_3DmNmtIOWvAkC9Dz1yFT0clph0x
+2026-05-15 22:27:05,048 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNmtIOWvAkC9Dz1yFT0clph0x "HTTP/1.1 200 OK"
+2026-05-15 22:27:05,051 [INFO]   Page 2: fetched 2 message(s) ['msg_3DmNmrtHbRv1xSFA0DZc8wcDBbb', 'msg_3DmNmq8bl3LQ011KlKs6gYufJ0x']  done=False  iterator=msg_3DmNmq8bl3LQ011KlKs6gYufJ0x
+2026-05-15 22:27:05,255 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNmq8bl3LQ011KlKs6gYufJ0x "HTTP/1.1 200 OK"
+2026-05-15 22:27:05,257 [INFO]   Page 3: fetched 2 message(s) ['msg_3DmNmoiONOpTT5ChFwlPWpJ6eoZ', 'msg_3DmNhota3ObcabvtMVxSLcu0sfv']  done=False  iterator=msg_3DmNhota3ObcabvtMVxSLcu0sfv
+2026-05-15 22:27:05,553 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNhota3ObcabvtMVxSLcu0sfv "HTTP/1.1 200 OK"
+2026-05-15 22:27:05,554 [INFO]   Page 4: fetched 2 message(s) ['msg_3DmNhnQdfzpRgyVoq9gT94290et', 'msg_3DmNhlbMDnYYRKNRXUaD9OSmSy7']  done=False  iterator=msg_3DmNhlbMDnYYRKNRXUaD9OSmSy7
+2026-05-15 22:27:05,738 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNhlbMDnYYRKNRXUaD9OSmSy7 "HTTP/1.1 200 OK"
+2026-05-15 22:27:05,741 [INFO]   Page 5: fetched 2 message(s) ['msg_3DmNhk1B22NwDgkM0de6tpNaKKd', 'msg_3DmNhiaVaU79YJ8vJBQD45dd2vH']  done=False  iterator=msg_3DmNhiaVaU79YJ8vJBQD45dd2vH
+2026-05-15 22:27:06,005 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNhiaVaU79YJ8vJBQD45dd2vH "HTTP/1.1 200 OK"
+2026-05-15 22:27:06,006 [INFO]   Page 6: fetched 2 message(s) ['msg_3DmNgGsqRffZH5gtvy6bKIgXHep', 'msg_3DmNgEsWWwO2ASRlpXhlWEBu7HL']  done=False  iterator=msg_3DmNgEsWWwO2ASRlpXhlWEBu7HL
+2026-05-15 22:27:06,197 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNgEsWWwO2ASRlpXhlWEBu7HL "HTTP/1.1 200 OK"
+2026-05-15 22:27:06,199 [INFO]   Page 7: fetched 2 message(s) ['msg_3DmNgDHZcq9rsjJuPXpKRR6hj7n', 'msg_3DmNgABEEVoyyC06WzBeHlcoDyJ']  done=False  iterator=msg_3DmNgABEEVoyyC06WzBeHlcoDyJ
+2026-05-15 22:27:06,379 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNgABEEVoyyC06WzBeHlcoDyJ "HTTP/1.1 200 OK"
+2026-05-15 22:27:06,379 [INFO]   Page 8: fetched 2 message(s) ['msg_3DmNg8l9dYSpjOoZfkw8RKBQPZ1', 'msg_3DmNf2knMpetFIWzQv3UjNfUWMh']  done=False  iterator=msg_3DmNf2knMpetFIWzQv3UjNfUWMh
+2026-05-15 22:27:06,648 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNf2knMpetFIWzQv3UjNfUWMh "HTTP/1.1 200 OK"
+2026-05-15 22:27:06,649 [INFO]   Page 9: fetched 2 message(s) ['msg_3DmNf1IOOPqRYmv7ycnxsX1uHMt', 'msg_3DmNez9l8QydCTIu7OdQmeHgPOB']  done=False  iterator=msg_3DmNez9l8QydCTIu7OdQmeHgPOB
+2026-05-15 22:27:06,849 [INFO] HTTP Request: GET https://api.us.svix.com/api/v1/app/test-app-pagination/msg?limit=2&iterator=msg_3DmNez9l8QydCTIu7OdQmeHgPOB "HTTP/1.1 200 OK"
+2026-05-15 22:27:06,851 [INFO]   Page 10: fetched 2 message(s) ['msg_3DmNexTI6qQIbCN3TFLzSbk7gS7', 'msg_3DmNevVFnmKI7HYvLZYmGmk1L3P']  done=True  iterator=msg_3DmNevVFnmKI7HYvLZYmGmk1L3P
+2026-05-15 22:27:06,851 [INFO] Pagination complete (done=True).
+2026-05-15 22:27:06,851 [INFO] Total messages fetched: 20  IDs: ['msg_3DmNmvQRkEXOfb1dUAvULiToOEx', 'msg_3DmNmtIOWvAkC9Dz1yFT0clph0x', 'msg_3DmNmrtHbRv1xSFA0DZc8wcDBbb', 'msg_3DmNmq8bl3LQ011KlKs6gYufJ0x', 'msg_3DmNmoiONOpTT5ChFwlPWpJ6eoZ', 'msg_3DmNhota3ObcabvtMVxSLcu0sfv', 'msg_3DmNhnQdfzpRgyVoq9gT94290et', 'msg_3DmNhlbMDnYYRKNRXUaD9OSmSy7', 'msg_3DmNhk1B22NwDgkM0de6tpNaKKd', 'msg_3DmNhiaVaU79YJ8vJBQD45dd2vH', 'msg_3DmNgGsqRffZH5gtvy6bKIgXHep', 'msg_3DmNgEsWWwO2ASRlpXhlWEBu7HL', 'msg_3DmNgDHZcq9rsjJuPXpKRR6hj7n', 'msg_3DmNgABEEVoyyC06WzBeHlcoDyJ', 'msg_3DmNg8l9dYSpjOoZfkw8RKBQPZ1', 'msg_3DmNf2knMpetFIWzQv3UjNfUWMh', 'msg_3DmNf1IOOPqRYmv7ycnxsX1uHMt', 'msg_3DmNez9l8QydCTIu7OdQmeHgPOB', 'msg_3DmNexTI6qQIbCN3TFLzSbk7gS7', 'msg_3DmNevVFnmKI7HYvLZYmGmk1L3P']
+2026-05-15 22:27:06,852 [INFO] Message IDs written to /home/user/project/output.json

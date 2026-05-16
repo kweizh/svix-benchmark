@@ -1,0 +1,145 @@
+Starting Svix pagination task...
+Creating application with UID: test-app-pagination
+Application test-app-pagination already exists, deleting and recreating...
+Error handling existing application: HTTP Error (conflict): An application with that id or uid already exists
+Task failed: HTTP Error (conflict): An application with that id or uid already exists
+Starting Svix pagination task...
+Creating/getting application with UID: test-app-pagination
+Application test-app-pagination already exists, fetching existing application...
+Could not find existing application with UID test-app-pagination
+Error getting existing application: HTTP Error (conflict): An application with that id or uid already exists
+Task failed: HTTP Error (conflict): An application with that id or uid already exists
+Starting Svix pagination task...
+Creating/getting application with UID: test-app-pagination
+Application test-app-pagination already exists, fetching existing application...
+Error getting existing application: Application.list() got an unexpected keyword argument 'limit'
+Task failed: Application.list() got an unexpected keyword argument 'limit'
+Starting Svix pagination task...
+Creating/getting application with UID: test-app-pagination
+Application test-app-pagination already exists, fetching existing application...
+Could not find existing application with UID test-app-pagination in first page
+Error getting existing application: Application.list() got an unexpected keyword argument 'iterator'
+Task failed: Application.list() got an unexpected keyword argument 'iterator'
+Starting Svix pagination task...
+Creating/getting application with UID: test-app-pagination
+Application test-app-pagination already exists, proceeding with existing application
+Creating event type: user.signup
+Event type user.signup already exists, proceeding...
+Sending 5 messages...
+Created message 1/5: msg_3DmQyxQnGyaiFJVuK5SQSYdiCzv
+Created message 2/5: msg_3DmQyzNsGESIl7rkvADo7GbzXt1
+Created message 3/5: msg_3DmQz0oTEUPebqNfs3d9OgzlrVH
+Created message 4/5: msg_3DmQz2ibR18DX0kDDiy5pBfnCj1
+Created message 5/5: msg_3DmQz48yTSvmQwAAwmaowlcSxrT
+Fetching messages with pagination (limit=2)...
+Fetching page 1...
+Error fetching page 1: Message.list() got an unexpected keyword argument 'limit'
+Task failed: Message.list() got an unexpected keyword argument 'limit'
+Starting Svix pagination task...
+Creating/getting application with UID: test-app-pagination
+Application test-app-pagination already exists, proceeding with existing application
+Creating event type: user.signup
+Event type user.signup already exists, proceeding...
+Sending 5 messages...
+Created message 1/5: msg_3DmR2gxHGcAdHNeiuRW3nZz47Bf
+Created message 2/5: msg_3DmR2ijMOl5CpWgSRmbqECmfTSB
+Created message 3/5: msg_3DmR2kYsX34FswDcZxK39kepLup
+Created message 4/5: msg_3DmR2m4I20PwIjApWa73zFbO26J
+Created message 5/5: msg_3DmR2nwtB75N3XQNhIusj98QzDL
+Fetching messages with pagination (limit=2)...
+Fetching page 1...
+  Fetched message: msg_3DmQz48yTSvmQwAAwmaowlcSxrT
+  Fetched message: msg_3DmQz2ibR18DX0kDDiy5pBfnCj1
+  Page 1: Got 2 messages, total so far: 2
+  More pages available, iterator: msg_3DmQz2ibR18DX0kDDiy5pBfnCj1
+Fetching page 2...
+  Fetched message: msg_3DmQz0oTEUPebqNfs3d9OgzlrVH
+  Fetched message: msg_3DmQyzNsGESIl7rkvADo7GbzXt1
+  Page 2: Got 2 messages, total so far: 4
+  More pages available, iterator: msg_3DmQyzNsGESIl7rkvADo7GbzXt1
+Fetching page 3...
+  Fetched message: msg_3DmQyxQnGyaiFJVuK5SQSYdiCzv
+  Fetched message: msg_3DmP2VvAbPMfYml0ACup8TpvzRv
+  Page 3: Got 2 messages, total so far: 6
+  More pages available, iterator: msg_3DmP2VvAbPMfYml0ACup8TpvzRv
+Fetching page 4...
+  Fetched message: msg_3DmP2RVgCxVoYT1QcRyAkBqdBJH
+  Fetched message: msg_3DmP2PqEpWOuQBik1meoXHCekZj
+  Page 4: Got 2 messages, total so far: 8
+  More pages available, iterator: msg_3DmP2PqEpWOuQBik1meoXHCekZj
+Fetching page 5...
+  Fetched message: msg_3DmP2NyFNnSVf3lcYWH9yv2RtMd
+  Fetched message: msg_3DmP2MgN8VPTUvjs4kB56y7svaZ
+  Page 5: Got 2 messages, total so far: 10
+  More pages available, iterator: msg_3DmP2MgN8VPTUvjs4kB56y7svaZ
+Fetching page 6...
+  Fetched message: msg_3DmOxTXfy0MAhJKiQpsvhjiaWsh
+  Fetched message: msg_3DmOxRiIC8gnZrSQtAkD3v26jsd
+  Page 6: Got 2 messages, total so far: 12
+  More pages available, iterator: msg_3DmOxRiIC8gnZrSQtAkD3v26jsd
+Fetching page 7...
+  Fetched message: msg_3DmOxQGsHn1DvhHNaqQp4G7Vd9z
+  Fetched message: msg_3DmOxNeOhdM5eyibsd2zTFKva8d
+  Page 7: Got 2 messages, total so far: 14
+  More pages available, iterator: msg_3DmOxNeOhdM5eyibsd2zTFKva8d
+Fetching page 8...
+  Fetched message: msg_3DmOxM8g3A5Wt3WVxay1N4cjUaN
+  Fetched message: msg_3DmNmvQRkEXOfb1dUAvULiToOEx
+  Page 8: Got 2 messages, total so far: 16
+  More pages available, iterator: msg_3DmNmvQRkEXOfb1dUAvULiToOEx
+Fetching page 9...
+  Fetched message: msg_3DmNmtIOWvAkC9Dz1yFT0clph0x
+  Fetched message: msg_3DmNmrtHbRv1xSFA0DZc8wcDBbb
+  Page 9: Got 2 messages, total so far: 18
+  More pages available, iterator: msg_3DmNmrtHbRv1xSFA0DZc8wcDBbb
+Fetching page 10...
+  Fetched message: msg_3DmNmq8bl3LQ011KlKs6gYufJ0x
+  Fetched message: msg_3DmNmoiONOpTT5ChFwlPWpJ6eoZ
+  Page 10: Got 2 messages, total so far: 20
+  More pages available, iterator: msg_3DmNmoiONOpTT5ChFwlPWpJ6eoZ
+Fetching page 11...
+  Fetched message: msg_3DmNhota3ObcabvtMVxSLcu0sfv
+  Fetched message: msg_3DmNhnQdfzpRgyVoq9gT94290et
+  Page 11: Got 2 messages, total so far: 22
+  More pages available, iterator: msg_3DmNhnQdfzpRgyVoq9gT94290et
+Fetching page 12...
+  Fetched message: msg_3DmNhlbMDnYYRKNRXUaD9OSmSy7
+  Fetched message: msg_3DmNhk1B22NwDgkM0de6tpNaKKd
+  Page 12: Got 2 messages, total so far: 24
+  More pages available, iterator: msg_3DmNhk1B22NwDgkM0de6tpNaKKd
+Fetching page 13...
+  Fetched message: msg_3DmNhiaVaU79YJ8vJBQD45dd2vH
+  Fetched message: msg_3DmNgGsqRffZH5gtvy6bKIgXHep
+  Page 13: Got 2 messages, total so far: 26
+  More pages available, iterator: msg_3DmNgGsqRffZH5gtvy6bKIgXHep
+Fetching page 14...
+  Fetched message: msg_3DmNgEsWWwO2ASRlpXhlWEBu7HL
+  Fetched message: msg_3DmNgDHZcq9rsjJuPXpKRR6hj7n
+  Page 14: Got 2 messages, total so far: 28
+  More pages available, iterator: msg_3DmNgDHZcq9rsjJuPXpKRR6hj7n
+Fetching page 15...
+  Fetched message: msg_3DmNgABEEVoyyC06WzBeHlcoDyJ
+  Fetched message: msg_3DmNg8l9dYSpjOoZfkw8RKBQPZ1
+  Page 15: Got 2 messages, total so far: 30
+  More pages available, iterator: msg_3DmNg8l9dYSpjOoZfkw8RKBQPZ1
+Fetching page 16...
+  Fetched message: msg_3DmNf2knMpetFIWzQv3UjNfUWMh
+  Fetched message: msg_3DmNf1IOOPqRYmv7ycnxsX1uHMt
+  Page 16: Got 2 messages, total so far: 32
+  More pages available, iterator: msg_3DmNf1IOOPqRYmv7ycnxsX1uHMt
+Fetching page 17...
+  Fetched message: msg_3DmNez9l8QydCTIu7OdQmeHgPOB
+  Fetched message: msg_3DmNexTI6qQIbCN3TFLzSbk7gS7
+  Page 17: Got 2 messages, total so far: 34
+  More pages available, iterator: msg_3DmNexTI6qQIbCN3TFLzSbk7gS7
+Fetching page 18...
+  Fetched message: msg_3DmNevVFnmKI7HYvLZYmGmk1L3P
+  Page 18: Got 1 messages, total so far: 35
+  More pages available, iterator: msg_3DmNevVFnmKI7HYvLZYmGmk1L3P
+Fetching page 19...
+  Page 19: Got 0 messages, total so far: 35
+  No more pages available
+Total messages fetched: 35
+Message IDs: ['msg_3DmQz48yTSvmQwAAwmaowlcSxrT', 'msg_3DmQz2ibR18DX0kDDiy5pBfnCj1', 'msg_3DmQz0oTEUPebqNfs3d9OgzlrVH', 'msg_3DmQyzNsGESIl7rkvADo7GbzXt1', 'msg_3DmQyxQnGyaiFJVuK5SQSYdiCzv', 'msg_3DmP2VvAbPMfYml0ACup8TpvzRv', 'msg_3DmP2RVgCxVoYT1QcRyAkBqdBJH', 'msg_3DmP2PqEpWOuQBik1meoXHCekZj', 'msg_3DmP2NyFNnSVf3lcYWH9yv2RtMd', 'msg_3DmP2MgN8VPTUvjs4kB56y7svaZ', 'msg_3DmOxTXfy0MAhJKiQpsvhjiaWsh', 'msg_3DmOxRiIC8gnZrSQtAkD3v26jsd', 'msg_3DmOxQGsHn1DvhHNaqQp4G7Vd9z', 'msg_3DmOxNeOhdM5eyibsd2zTFKva8d', 'msg_3DmOxM8g3A5Wt3WVxay1N4cjUaN', 'msg_3DmNmvQRkEXOfb1dUAvULiToOEx', 'msg_3DmNmtIOWvAkC9Dz1yFT0clph0x', 'msg_3DmNmrtHbRv1xSFA0DZc8wcDBbb', 'msg_3DmNmq8bl3LQ011KlKs6gYufJ0x', 'msg_3DmNmoiONOpTT5ChFwlPWpJ6eoZ', 'msg_3DmNhota3ObcabvtMVxSLcu0sfv', 'msg_3DmNhnQdfzpRgyVoq9gT94290et', 'msg_3DmNhlbMDnYYRKNRXUaD9OSmSy7', 'msg_3DmNhk1B22NwDgkM0de6tpNaKKd', 'msg_3DmNhiaVaU79YJ8vJBQD45dd2vH', 'msg_3DmNgGsqRffZH5gtvy6bKIgXHep', 'msg_3DmNgEsWWwO2ASRlpXhlWEBu7HL', 'msg_3DmNgDHZcq9rsjJuPXpKRR6hj7n', 'msg_3DmNgABEEVoyyC06WzBeHlcoDyJ', 'msg_3DmNg8l9dYSpjOoZfkw8RKBQPZ1', 'msg_3DmNf2knMpetFIWzQv3UjNfUWMh', 'msg_3DmNf1IOOPqRYmv7ycnxsX1uHMt', 'msg_3DmNez9l8QydCTIu7OdQmeHgPOB', 'msg_3DmNexTI6qQIbCN3TFLzSbk7gS7', 'msg_3DmNevVFnmKI7HYvLZYmGmk1L3P']
+Saved message IDs to /home/user/project/output.json
+Task completed successfully!

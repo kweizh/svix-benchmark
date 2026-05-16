@@ -1,0 +1,44 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 0,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778884571.9564238,
+            "stop": 1778884572.9071543
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_script_ran_and_output_files_exist",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.5429137140745297,
+                "start": 1778884572.3444464,
+                "stop": 1778884572.9019935,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_script_ran_and_output_files_exist():\n        # Run the setup script\n        result = subprocess.run([\"python3\", \"setup_endpoint.py\"], cwd=PROJECT_DIR, capture_output=True, text=True)\n>       assert result.returncode == 0, f\"Script failed with output: {result.stderr}\"\nE       AssertionError: Script failed with output: Traceback (most recent call last):\nE           File \"/home/user/project/setup_endpoint.py\", line 68, in <module>\nE             sys.exit(main())\nE                      ^^^^^^\nE           File \"/home/user/project/setup_endpoint.py\", line 44, in main\nE             headers=EndpointHeadersIn(\nE                     ^^^^^^^^^^^^^^^^^^\nE           File \"/root/.cache/uv/archive-v0/Vp7IPMNofQwbfl1xc8Mwg/lib/python3.12/site-packages/pydantic/main.py\", line 263, in __init__\nE             validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)\nE                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE         pydantic_core._pydantic_core.ValidationError: 1 validation error for EndpointHeadersIn\nE         headers\nE           Field required [type=missing, input_value={'http_headers': {'X-Cust...h': 'secret-token-123'}}, input_type=dict]\nE             For further information visit https://errors.pydantic.dev/2.13/v/missing\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['python3', 'setup_endpoint.py'], returncode=1, stdout=\"Creating application 'Custom Header App'...ecret-token-123\\'}}, input_type=dict]\\n    For further information visit https://errors.pydantic.dev/2.13/v/missing\\n').returncode\n\ntests/test_final_state.py:13: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_endpoint_configuration",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0003848319174721837,
+                "start": 1778884572.9021187,
+                "stop": 1778884572.906842,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_endpoint_configuration():\n        # Read IDs\n>       with open(APP_ID_FILE, \"r\") as f:\n             ^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/project/app_id.txt'\n\ntests/test_final_state.py:20: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

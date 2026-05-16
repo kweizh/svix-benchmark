@@ -7,7 +7,7 @@ import secrets
 import pytest
 
 PROJECT_DIR = "/home/user/project"
-API_BASE = "https://api.svix.com/api/v1"
+API_BASE = "https://api.us.svix.com/api/v1"
 
 @pytest.fixture(scope="module")
 def svix_setup():
@@ -35,7 +35,11 @@ def svix_setup():
     # Create Endpoint
     req = urllib.request.Request(
         f"{API_BASE}/app/{app_id}/endpoint",
-        data=json.dumps({"url": "https://example.com/webhook"}).encode("utf-8"),
+        data=json.dumps({
+            "url": "https://example.com/webhook",
+            "version": 1,
+            "filterTypes": ["user.signup"],
+        }).encode("utf-8"),
         headers=headers,
         method="POST"
     )

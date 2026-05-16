@@ -1,0 +1,43 @@
+- Initializing MCP connections...
+You
+# Preserving your work Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable. --- # Recover a Failed Webhook Endpoint with Svix ## Background You are managing webhooks for a service using Svix. You need to write a script that sets up a new application, provisions an endpoint that is initially disabled (simulating a failed state), updates it to a working URL, and triggers a recovery. ## Requirements Write a Python script `recover.py` that uses the `svix` SDK to: 1. Initialize the Svix client using the `SVIX_AUTH_TOKEN` environment variable. 2. Create a new application named `RecoverApp`. 3. Create a new endpoint for this application with the URL `http://failing-endpoint.local/webhook` and set it to be disabled (`disabled=True`). 4. Update this endpoint to: - Change its URL to `http://working-endpoint.local/webhook`. - Re-enable it (`disabled=False`). 5. Recover the failed messages for this endpoint since 24 hours ago (you can use `datetime.now(timezone.utc) - timedelta(hours=24)` for the `since` parameter in the recover request). ## Implementation Guide 1. Install the `svix` package if it's not already installed. 2. Create `/home/user/myproject/recover.py`. 3. Use `svix_client.application.create(ApplicationIn(name="RecoverApp"))` to create the app. 4. Use `svix_client.endpoint.create(app_id, EndpointIn(url="http://failing-endpoint.local/webhook", disabled=True))`. 5. Use `svix_client.endpoint.update(app_id, endpoint_id, EndpointUpdate(url="http://working-endpoint.local/webhook", disabled=False))` to update the URL and `disabled` status. 6. Use `svix_client.endpoint.recover(app_id, endpoint_id, RecoverIn(since=...))` to recover messages. ## Constraints - Project path: `/home/user/myproject` - The script must be executable by running `python recover.py`. - You must use the `svix` Python library. ## Integrations - Svix   
+
+Pochi
+💭 Thinking for 68 characters   
+📋 Updating todo list (4 items) ✔ 
+💫 Executing pip install svix 2>&1 | tail -5 ✔ 
+💫 Executing mkdir -p /home/user/myproject && ls /home/user/myproject ✔ 
+💫 Executing pip install svix --break-system-packages 2>&1 | tail -5 ✔ 
+📋 Updating todo list (4 items) ✔ 
+Now let me check the svix SDK to confirm the correct import paths before writing the script:   
+💫 Executing python3 -c "import svix; print(svix.__version__)" ✔ 
+💫 Executing python3 -c "from svix.api import Svix, ApplicationIn, EndpointIn, EndpointUpdate, RecoverIn; print('imports OK')" ✔ 
+All imports verified. Now write the script:   
+✏️  Writing /home/user/myproject/recover.py ✔ 
+💫 Executing python3 -m py_compile /home/user/myproject/recover.py && echo "Syntax OK" ✔ 
+Script compiles cleanly. Now save the artifact:   
+💫 Executing cp /home/user/myproject/recover.py /logs/artifacts/recover.py && echo "Artifact saved." ✔ 
+📋 Updating todo list (4 items) ✔ 
+🎉 Task Completed
+The script `/home/user/myproject/recover.py` has been written and verified (syntax-clean). A copy is also saved to `/logs/artifacts/recover.py`.
+
+## What the script does
+
+| Step | Action | SDK call |
+|------|--------|----------|
+| 1 | Read `SVIX_AUTH_TOKEN` from the environment and initialise the client | `Svix(auth_token)` |
+| 2 | Create application **RecoverApp** | `svix_client.application.create(ApplicationIn(name="RecoverApp"))` |
+| 3 | Create a **disabled** endpoint at `http://failing-endpoint.local/webhook` | `svix_client.endpoint.create(app_id, EndpointIn(url=..., disabled=True))` |
+| 4 | Update the endpoint: new URL `http://working-endpoint.local/webhook`, `disabled=False` | `svix_client.endpoint.update(app_id, endpoint_id, EndpointUpdate(url=..., disabled=False))` |
+| 5 | Trigger recovery for messages in the last **24 hours** | `svix_client.endpoint.recover(app_id, endpoint_id, RecoverIn(since=datetime.now(timezone.utc) - timedelta(hours=24)))` |
+
+## Usage
+
+```bash
+export SVIX_AUTH_TOKEN="your_token_here"
+cd /home/user/myproject
+python recover.py
+```
+
+The script will print a confirmation line for each completed step, ending with `Done. Endpoint recovery workflow completed successfully.`   
+  

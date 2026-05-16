@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 0,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778885629.2681198,
+            "stop": 1778885659.3287778
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_webhook_verification_valid_signature",
+                "status": "failed",
+                "duration": 30.043009956018068,
+                "start": 1778885629.272157,
+                "stop": 1778885659.3248527,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "@pytest.fixture(scope=\"module\")\n    def start_app():\n        # Start the app\n        process = subprocess.Popen(\n            [\"npm\", \"start\"],\n            cwd=PROJECT_DIR,\n            stdout=subprocess.PIPE,\n            stderr=subprocess.PIPE,\n            preexec_fn=os.setsid\n        )\n    \n        # Wait for the app to be ready\n        if not wait_for_port(3000):\n            # Kill the process group before failing\n            import signal\n            os.killpg(os.getpgid(process.pid), signal.SIGTERM)\n>           pytest.fail(\"App failed to start and listen on port 3000.\")\nE           Failed: App failed to start and listen on port 3000.\n\ntests/test_final_state.py:35: Failed"
+            },
+            {
+                "name": "test_final_state.py::test_webhook_verification_invalid_signature",
+                "status": "failed",
+                "duration": 0.00023583194706588984,
+                "start": 1778885659.325029,
+                "stop": 1778885659.327026,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "@pytest.fixture(scope=\"module\")\n    def start_app():\n        # Start the app\n        process = subprocess.Popen(\n            [\"npm\", \"start\"],\n            cwd=PROJECT_DIR,\n            stdout=subprocess.PIPE,\n            stderr=subprocess.PIPE,\n            preexec_fn=os.setsid\n        )\n    \n        # Wait for the app to be ready\n        if not wait_for_port(3000):\n            # Kill the process group before failing\n            import signal\n            os.killpg(os.getpgid(process.pid), signal.SIGTERM)\n>           pytest.fail(\"App failed to start and listen on port 3000.\")\nE           Failed: App failed to start and listen on port 3000.\n\ntests/test_final_state.py:35: Failed"
+            },
+            {
+                "name": "test_final_state.py::test_other_endpoints_json_parsing",
+                "status": "failed",
+                "duration": 0.00016278994735330343,
+                "start": 1778885659.3271024,
+                "stop": 1778885659.328626,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "@pytest.fixture(scope=\"module\")\n    def start_app():\n        # Start the app\n        process = subprocess.Popen(\n            [\"npm\", \"start\"],\n            cwd=PROJECT_DIR,\n            stdout=subprocess.PIPE,\n            stderr=subprocess.PIPE,\n            preexec_fn=os.setsid\n        )\n    \n        # Wait for the app to be ready\n        if not wait_for_port(3000):\n            # Kill the process group before failing\n            import signal\n            os.killpg(os.getpgid(process.pid), signal.SIGTERM)\n>           pytest.fail(\"App failed to start and listen on port 3000.\")\nE           Failed: App failed to start and listen on port 3000.\n\ntests/test_final_state.py:35: Failed"
+            }
+        ]
+    }
+}

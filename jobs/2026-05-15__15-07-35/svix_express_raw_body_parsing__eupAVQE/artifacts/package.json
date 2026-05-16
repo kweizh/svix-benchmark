@@ -1,0 +1,13 @@
+{
+  "name": "svix-webhook-app",
+  "version": "1.0.0",
+  "description": "App for svix webhook testing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "svix": "^1.21.0"
+  }
+}

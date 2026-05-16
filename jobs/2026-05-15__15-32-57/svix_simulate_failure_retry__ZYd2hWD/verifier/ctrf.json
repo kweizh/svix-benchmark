@@ -1,0 +1,44 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 0,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778884664.7758794,
+            "stop": 1778884665.0508072
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_output_file_exists_and_valid",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0005319589981809258,
+                "start": 1778884665.0357144,
+                "stop": 1778884665.0494723,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_output_file_exists_and_valid():\n>       assert os.path.isfile(OUTPUT_FILE), f\"Output file {OUTPUT_FILE} does not exist.\"\nE       AssertionError: Output file /home/user/project/output.json does not exist.\nE       assert False\nE        +  where False = <function isfile at 0xfcd208390220>('/home/user/project/output.json')\nE        +    where <function isfile at 0xfcd208390220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:10: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_svix_message_attempts",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002984160091727972,
+                "start": 1778884665.0495641,
+                "stop": 1778884665.0506756,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_svix_message_attempts():\n        assert \"SVIX_AUTH_TOKEN\" in os.environ, \"SVIX_AUTH_TOKEN environment variable is missing in the verifier environment.\"\n    \n>       with open(OUTPUT_FILE, \"r\") as f:\n             ^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/project/output.json'\n\ntests/test_final_state.py:23: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

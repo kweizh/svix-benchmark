@@ -1,0 +1,56 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 4,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778885107.922594,
+            "stop": 1778885124.1893435
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_script_exists",
+                "status": "passed",
+                "duration": 0.0002906250301748514,
+                "start": 1778885108.1660352,
+                "stop": 1778885108.1664715,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_script_execution",
+                "status": "passed",
+                "duration": 6.607598913018592,
+                "start": 1778885108.1665494,
+                "stop": 1778885114.7745426,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_output_json_exists_and_valid",
+                "status": "passed",
+                "duration": 0.0005238329758867621,
+                "start": 1778885114.7746737,
+                "stop": 1778885114.7753656,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_messages_exist_in_svix",
+                "status": "passed",
+                "duration": 9.409928045002744,
+                "start": 1778885114.7754693,
+                "stop": 1778885124.1881423,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

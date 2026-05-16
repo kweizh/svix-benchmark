@@ -21,7 +21,7 @@ def setup_svix():
     app = svix.application.create(app_in)
     
     # Create endpoint
-    ep_in = EndpointIn(url="https://example.com/webhook", version=1)
+    ep_in = EndpointIn(url="https://example.com/webhook", version=1, filter_types=["test.event"])
     ep = svix.endpoint.create(app.id, ep_in)
     
     # Create message
@@ -39,9 +39,9 @@ def setup_svix():
 def test_script_execution(setup_svix):
     app_id, msg_id = setup_svix
     
-    # Wait for the webhook to be attempted
+    # Wait for the webhook to be attempted (Svix indexing is eventually consistent)
     import time
-    time.sleep(3)
+    time.sleep(10)
     
     # Run the user's script
     result = subprocess.run(

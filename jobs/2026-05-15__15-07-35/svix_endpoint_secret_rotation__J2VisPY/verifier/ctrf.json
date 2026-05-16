@@ -1,0 +1,38 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778883118.8710163,
+            "stop": 1778883120.0403593
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_rotate_script_exists",
+                "status": "passed",
+                "duration": 0.0003181659849360585,
+                "start": 1778883118.878319,
+                "stop": 1778883118.8787823,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_secret_rotation",
+                "status": "passed",
+                "duration": 1.1591956710908562,
+                "start": 1778883118.8788695,
+                "stop": 1778883120.0391133,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

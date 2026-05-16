@@ -1,0 +1,16 @@
+{
+  "name": "svix-message-attempts",
+  "version": "1.0.0",
+  "description": "List Svix message attempts",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "svix": "^1.0.0"
+  }
+}

@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778885917.003856,
+            "stop": 1778885917.555278
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_output_file_exists_and_valid",
+                "status": "passed",
+                "duration": 0.0003714559134095907,
+                "start": 1778885917.2533975,
+                "stop": 1778885917.2539258,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_svix_message_attempts",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.26436637400183827,
+                "start": 1778885917.254011,
+                "stop": 1778885917.5550241,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_svix_message_attempts():\n        assert \"SVIX_AUTH_TOKEN\" in os.environ, \"SVIX_AUTH_TOKEN environment variable is missing in the verifier environment.\"\n    \n        with open(OUTPUT_FILE, \"r\") as f:\n            data = json.load(f)\n    \n        app_id = data[\"appId\"]\n        msg_id = data[\"msgId\"]\n    \n        svix = Svix(os.environ[\"SVIX_AUTH_TOKEN\"])\n    \n        # Fetch message attempts\n        try:\n            attempts_response = svix.message_attempt.list_by_msg(app_id, msg_id)\n        except Exception as e:\n            pytest.fail(f\"Failed to fetch message attempts from Svix API: {e}\")\n    \n        attempts = attempts_response.data\n    \n        assert len(attempts) >= 3, f\"Expected at least 3 delivery attempts, but found {len(attempts)}.\"\n    \n        # Attempts are usually returned in descending order (newest first). Let's sort by timestamp ascending to be safe.\n        attempts.sort(key=lambda a: a.timestamp)\n    \n        first_attempt = attempts[0]\n        second_attempt = attempts[1]\n        final_attempt = attempts[-1]\n    \n        assert first_attempt.status != 0, f\"Expected 1st attempt to be a failure (status != 0), but got {first_attempt.status}.\"\n        assert second_attempt.status != 0, f\"Expected 2nd attempt to be a failure (status != 0), but got {second_attempt.status}.\"\n>       assert final_attempt.status == 0, f\"Expected final attempt to be a success (status 0), but got {final_attempt.status}.\"\nE       AssertionError: Expected final attempt to be a success (status 0), but got 2.\nE       assert <MessageStatus.FAIL: 2> == 0\nE        +  where <MessageStatus.FAIL: 2> = MessageAttemptOut(endpoint_id='ep_3DmRyccIAfqlOoR2YmByb0cufLW', id='atmpt_3DmSfILVpTA2dxS3yTJvaPI5tWB', msg=None, msg_...tzinfo=TzInfo(0)), trigger_type=<MessageAttemptTriggerType.SCHEDULED: 0>, url='https://play.svix.com/in/c_XddtrkgDz9/').status\n\ntests/test_final_state.py:50: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

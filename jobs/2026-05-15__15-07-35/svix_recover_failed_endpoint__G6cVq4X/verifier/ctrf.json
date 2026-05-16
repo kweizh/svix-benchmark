@@ -1,0 +1,32 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778883139.5862103,
+            "stop": 1778883140.1837463
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_recover_app_and_endpoint_updated",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.2389717879705131,
+                "start": 1778883139.9285376,
+                "stop": 1778883140.1835654,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "svix_client = <svix.api.svix.Svix object at 0xe80465bbe900>\n\n    def test_recover_app_and_endpoint_updated(svix_client):\n        # 1. Retrieve the RecoverApp application\n        apps_response = svix_client.application.list()\n        recover_app = None\n        for app in apps_response.data:\n            if app.name == \"RecoverApp\":\n                recover_app = app\n                break\n    \n>       assert recover_app is not None, \"Application 'RecoverApp' was not found.\"\nE       AssertionError: Application 'RecoverApp' was not found.\nE       assert None is not None\n\ntests/test_final_state.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

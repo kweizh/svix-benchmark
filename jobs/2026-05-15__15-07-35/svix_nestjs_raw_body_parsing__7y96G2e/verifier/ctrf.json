@@ -1,0 +1,38 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1778883275.942156,
+            "stop": 1778883275.9722238
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_valid_webhook_signature",
+                "status": "passed",
+                "duration": 0.018330288003198802,
+                "start": 1778883275.9486527,
+                "stop": 1778883275.9673643,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_invalid_webhook_signature",
+                "status": "passed",
+                "duration": 0.004097572062164545,
+                "start": 1778883275.9675446,
+                "stop": 1778883275.9720235,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

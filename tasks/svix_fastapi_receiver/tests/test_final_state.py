@@ -4,10 +4,14 @@ import time
 import socket
 import urllib.request
 import urllib.error
+import hmac
+import hashlib
+import base64
 import pytest
 
 PROJECT_DIR = "/home/user/svix_project"
 PORT = 8000
+SECRET = "whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw"
 
 def wait_for_port(port, timeout=30):
     start_time = time.time()
@@ -17,6 +21,21 @@ def wait_for_port(port, timeout=30):
                 return True
         time.sleep(1)
     return False
+
+def generate_svix_headers(payload_bytes, secret):
+    msg_id = "msg_test123"
+    timestamp = str(int(time.time()))
+    secret_bytes = base64.b64decode(secret.split("_")[1])
+    to_sign = f"{msg_id}.{timestamp}.".encode("utf-8") + payload_bytes
+    signature_b64 = base64.b64encode(
+        hmac.new(secret_bytes, to_sign, hashlib.sha256).digest()
+    ).decode("utf-8")
+    return {
+        "svix-id": msg_id,
+        "svix-timestamp": timestamp,
+        "svix-signature": f"v1,{signature_b64}",
+        "Content-Type": "application/json",
+    }
 
 @pytest.fixture(scope="module")
 def start_app():
@@ -45,12 +64,7 @@ def start_app():
 def test_valid_signature(start_app):
     url = f"http://localhost:{PORT}/webhook"
     data = b'{"test": 2432232314}'
-    headers = {
-        "svix-id": "msg_p5jXN8AQM9LPUauROQsGsCgki",
-        "svix-timestamp": "1614265330",
-        "svix-signature": "v1,16j35QOozQQhF/Weskj/htVEPiAbTEo1UzMSt7pAORw=",
-        "Content-Type": "application/json"
-    }
+    headers = generate_svix_headers(data, SECRET)
     req = urllib.request.Request(url, data=data, headers=headers, method="POST")
     try:
         with urllib.request.urlopen(req) as response:
@@ -61,12 +75,9 @@ def test_valid_signature(start_app):
 def test_invalid_signature(start_app):
     url = f"http://localhost:{PORT}/webhook"
     data = b'{"test": 2432232314}'
-    headers = {
-        "svix-id": "msg_p5jXN8AQM9LPUauROQsGsCgki",
-        "svix-timestamp": "1614265330",
-        "svix-signature": "v1,invalid_signature=",
-        "Content-Type": "application/json"
-    }
+    headers = generate_svix_headers(data, SECRET)
+    # Tamper with the signature
+    headers["svix-signature"] = "v1,invalid_signature="
     req = urllib.request.Request(url, data=data, headers=headers, method="POST")
     try:
         with urllib.request.urlopen(req) as response:

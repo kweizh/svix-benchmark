@@ -1,0 +1,101 @@
+{
+    "id": "b1feae57-3939-42db-b45c-54700cc9f1ca",
+    "task_name": "svix_idempotency_duplicate_check",
+    "trial_name": "svix_idempotency_duplicate_check__MkqoqvA",
+    "trial_uri": "file:///Users/warrenlow/Documents/projects/pochi-harbor/jobs/2026-05-15__15-19-04/svix_idempotency_duplicate_check__MkqoqvA",
+    "task_id": {
+        "path": "svix-tasks/svix_idempotency_duplicate_check"
+    },
+    "source": "svix-tasks",
+    "task_checksum": "b803d715db4914524a858dc45c2cde6449b9bf816ebab4f4ed77b233be8eedc1",
+    "config": {
+        "task": {
+            "path": "svix-tasks/svix_idempotency_duplicate_check",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "svix-tasks"
+        },
+        "trial_name": "svix_idempotency_duplicate_check__MkqoqvA",
+        "trials_dir": "jobs/2026-05-15__15-19-04",
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": null,
+            "import_path": "agents.pochi:Pochi",
+            "model_name": "anthropic/claude-4-6-sonnet",
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "kwargs": {},
+            "env": {}
+        },
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "suppress_override_warnings": false,
+            "mounts_json": null,
+            "env": {},
+            "kwargs": {}
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "job_id": "4dfbd169-fb9e-4448-88af-684ce7f6c6ef"
+    },
+    "agent_info": {
+        "name": "pochi",
+        "version": "0.6.8",
+        "model_info": {
+            "name": "claude-4-6-sonnet",
+            "provider": "anthropic"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 0,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 30525,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 1.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-05-15T22:24:56.519583Z",
+    "finished_at": "2026-05-15T22:29:08.536265Z",
+    "environment_setup": {
+        "started_at": "2026-05-15T22:24:56.521455Z",
+        "finished_at": "2026-05-15T22:24:58.289263Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-05-15T22:24:58.289280Z",
+        "finished_at": "2026-05-15T22:25:50.404637Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-05-15T22:25:50.404754Z",
+        "finished_at": "2026-05-15T22:28:48.715389Z"
+    },
+    "verifier": {
+        "started_at": "2026-05-15T22:28:48.719293Z",
+        "finished_at": "2026-05-15T22:28:57.803724Z"
+    }
+}

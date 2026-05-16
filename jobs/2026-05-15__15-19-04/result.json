@@ -1,0 +1,42 @@
+{
+  "id": "4dfbd169-fb9e-4448-88af-684ce7f6c6ef",
+  "started_at": "2026-05-15T15:19:05.487643",
+  "finished_at": "2026-05-15T15:29:08.540681",
+  "n_total_trials": 12,
+  "stats": {
+    "n_trials": 12,
+    "n_errors": 0,
+    "evals": {
+      "pochi__claude-4-6-sonnet__svix-tasks": {
+        "n_trials": 12,
+        "n_errors": 0,
+        "metrics": [
+          {
+            "mean": 0.9166666666666666
+          }
+        ],
+        "reward_stats": {
+          "reward": {
+            "0.0": [
+              "svix_recover_failed_endpoint__4oeTK6n"
+            ],
+            "1.0": [
+              "svix_cancel_message_dispatch__AeaKkt8",
+              "svix_custom_webhook_headers__dHoTKhE",
+              "svix_simulate_failure_retry__zdpiNsi",
+              "svix_nestjs_raw_body_parsing__XpWCLmQ",
+              "svix_endpoint_secret_rotation__CFxH3Lp",
+              "svix_list_message_attempts__9uYiZU2",
+              "svix_idempotency_duplicate_check__MkqoqvA",
+              "svix_express_raw_body_parsing__c5UcrgA",
+              "svix_list_messages_pagination__X2LM96R",
+              "svix_fastapi_receiver__cqDrUj9",
+              "svix_message_retry_verification__5dRqDvb"
+            ]
+          }
+        },
+        "exception_stats": {}
+      }
+    }
+  }
+}

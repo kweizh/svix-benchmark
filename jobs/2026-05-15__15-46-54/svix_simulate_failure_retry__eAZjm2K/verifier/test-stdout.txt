@@ -1,0 +1,70 @@
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+   Building standardwebhooks==1.0.1
+Downloading pygments (1.2MiB)
+Downloading pydantic-core (1.9MiB)
+ Downloading pygments
+ Downloading pydantic-core
+      Built standardwebhooks==1.0.1
+Installed 27 packages in 11ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: anyio-4.13.0, json-ctrf-0.3.5
+collected 2 items
+
+tests/test_final_state.py .F                                             [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_svix_message_attempts __________________________
+
+    def test_svix_message_attempts():
+        assert "SVIX_AUTH_TOKEN" in os.environ, "SVIX_AUTH_TOKEN environment variable is missing in the verifier environment."
+    
+        with open(OUTPUT_FILE, "r") as f:
+            data = json.load(f)
+    
+        app_id = data["appId"]
+        msg_id = data["msgId"]
+    
+        svix = Svix(os.environ["SVIX_AUTH_TOKEN"])
+    
+        # Fetch message attempts
+        try:
+            attempts_response = svix.message_attempt.list_by_msg(app_id, msg_id)
+        except Exception as e:
+            pytest.fail(f"Failed to fetch message attempts from Svix API: {e}")
+    
+        attempts = attempts_response.data
+    
+        assert len(attempts) >= 3, f"Expected at least 3 delivery attempts, but found {len(attempts)}."
+    
+        # Attempts are usually returned in descending order (newest first). Let's sort by timestamp ascending to be safe.
+        attempts.sort(key=lambda a: a.timestamp)
+    
+        first_attempt = attempts[0]
+        second_attempt = attempts[1]
+        final_attempt = attempts[-1]
+    
+        assert first_attempt.status != 0, f"Expected 1st attempt to be a failure (status != 0), but got {first_attempt.status}."
+        assert second_attempt.status != 0, f"Expected 2nd attempt to be a failure (status != 0), but got {second_attempt.status}."
+>       assert final_attempt.status == 0, f"Expected final attempt to be a success (status 0), but got {final_attempt.status}."
+E       AssertionError: Expected final attempt to be a success (status 0), but got 2.
+E       assert <MessageStatus.FAIL: 2> == 0
+E        +  where <MessageStatus.FAIL: 2> = MessageAttemptOut(endpoint_id='ep_3DmRyccIAfqlOoR2YmByb0cufLW', id='atmpt_3DmSfILVpTA2dxS3yTJvaPI5tWB', msg=None, msg_...tzinfo=TzInfo(0)), trigger_type=<MessageAttemptTriggerType.SCHEDULED: 0>, url='https://play.svix.com/in/c_XddtrkgDz9/').status
+
+tests/test_final_state.py:50: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_output_file_exists_and_valid
+FAILED tests/test_final_state.py::test_svix_message_attempts - AssertionError...
+========================= 1 failed, 1 passed in 0.55s ==========================

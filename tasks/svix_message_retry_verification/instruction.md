@@ -12,7 +12,7 @@ Svix handles sending webhooks and automatically retries failed deliveries. You n
   3. Creates an Endpoint for that application pointing to `http://localhost:9999/webhook` (this server does not exist).
   4. Sends a message with `eventType: "user.signup"` and a payload of your choice.
   5. Waits a few seconds, then fetches the message attempts for the sent message.
-  6. Writes the application UID, message ID, and the status of the first attempt to `/home/user/svix-task/output.json`.
+  6. Writes the application UID, message ID, and the status of the first attempt to `/home/user/svix-task/output.json`. The file MUST be a JSON object with exactly these keys: `"app_uid"`, `"msg_id"`, `"status"`.
 
 ## Implementation Guide
 1. `cd /home/user/svix-task` and `npm init -y`.

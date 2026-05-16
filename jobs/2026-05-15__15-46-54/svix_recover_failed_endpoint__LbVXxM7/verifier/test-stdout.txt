@@ -1,0 +1,48 @@
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+   Building standardwebhooks==1.0.1
+Downloading pydantic-core (1.9MiB)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+ Downloading pydantic-core
+      Built standardwebhooks==1.0.1
+Installed 27 packages in 11ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: anyio-4.13.0, json-ctrf-0.3.5
+collected 1 item
+
+tests/test_final_state.py F                                              [100%]
+
+=================================== FAILURES ===================================
+____________________ test_recover_app_and_endpoint_updated _____________________
+
+svix_client = <svix.api.svix.Svix object at 0xef6ffa060e90>
+
+    def test_recover_app_and_endpoint_updated(svix_client):
+        # 1. Retrieve the RecoverApp application
+        apps_response = svix_client.application.list()
+        recover_app = None
+        for app in apps_response.data:
+            if app.name == "RecoverApp":
+                recover_app = app
+                break
+    
+>       assert recover_app is not None, "Application 'RecoverApp' was not found."
+E       AssertionError: Application 'RecoverApp' was not found.
+E       assert None is not None
+
+tests/test_final_state.py:20: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_recover_app_and_endpoint_updated - Ass...
+============================== 1 failed in 0.50s ===============================

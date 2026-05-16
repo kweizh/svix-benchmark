@@ -1,0 +1,99 @@
+- Initializing MCP connections...
+You
+# Preserving your work Save a copy of files you create during this task to `/logs/artifacts/`. This directory is preserved after the run so outputs can be inspected. Organize with subdirectories if helpful (e.g., `/logs/artifacts/code/`, `/logs/artifacts/reports/`). The directory already exists and is writable. *** # Fix Svix Webhook Verification in Express ## Background Svix requires the raw, unparsed request body to verify webhook signatures. An existing Express.js application has `app.use(express.json())` configured globally, which parses the body into a JSON object and causes the Svix webhook verification to fail. ## Requirements * Modify the Express server to properly handle Svix webhooks on the `/webhook` endpoint. * The webhook verification must succeed using the `svix` SDK. * The server must still be able to parse JSON bodies for other endpoints. ## Implementation Guide 1. The project is located at `/home/user/app`. 2. Review `server.js` which currently fails to verify Svix webhooks. 3. Update the `/webhook` route to use `express.raw({ type: 'application/json' })` or `body-parser.raw` to ensure `req.body` remains a raw string/buffer for this specific route, or use middleware to capture the raw body. 4. Ensure the webhook verification logic in the route works correctly with the raw body. ## Constraints * Project path: /home/user/app * Start command: `npm start` * Port: 3000 * Do not break JSON parsing for other endpoints. ## Integrations * None   
+
+Pochi
+💭 Thinking for 96 characters   
+📂 Listing files in /home/user/app ✔ 
+📖 Reading /home/user/app/server.js ✔ 
+📖 Reading /home/user/app/package.json ✔ 
+The problem is clear. `app.use(express.json())` globally parses every request body, so by the time the `/webhook` handler runs, `req.body` is a plain JS object instead of the raw buffer/string that Svix needs to verify the signature. The fix: apply `express.raw({ type: 'application/json' })` as route-level middleware **only** on `/webhook`, and move `express.json()` so it does **not** apply to that route.   
+📋 Updating todo list (3 items) ✔ 
+🔧 Applying diff to /home/user/app/server.js ✔ 
+📋 Updating todo list (3 items) ✔ 
+Now let's verify the final file looks correct and start the server to confirm it boots cleanly:   
+📖 Reading /home/user/app/server.js ✔ 
+💫 Executing cd /home/user/app && npm install 2>&1 | tail -5 ✔ 
+🛠️ Tool startBackgroundJob ✔ 
+🛠️ Tool readBackgroundJobOutput ✔ 
+Server started cleanly. Now run a quick smoke test against both endpoints:   
+💫 Executing curl -s -X POST http://localhost:3000/api/data \
+  -H "Content-Type: application/json" \
+  -d '{"hello":"world"}' && echo "" ✔ 
+`/api/data` still parses JSON correctly. Now test the `/webhook` endpoint — it should reject a bad signature with `400` (which proves the verification is actually running against the raw body), and we can also test a valid signature with a small helper script:   
+💫 Executing # Bad-signature test: expect 400
+curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:3000/webhook \
+  -H "Content-Type: application/json" \
+  -H "svix-id: msg_test" \
+  -H "svix-timestamp: 1234567890" \
+  -H "svix-signature: v1,badsig" \
+  -d '{"event":"test"}' ✔ 
+Verification is active (bad signature → `400`). Now generate a valid signed request using the same secret the server uses:   
+💫 Executing node -e "
+const { Webhook } = require('/home/user/app/node_modules/svix');
+const secret = 'whsec_testsecret';
+const wh = new Webhook(secret);
+const payload = JSON.stringify({ event: 'test' });
+const msgId = 'msg_' + Date.now();
+const ts = Math.floor(Date.now() / 1000).toString();
+const headers = wh.sign(msgId, new Date(Number(ts) * 1000), payload);
+console.log(JSON.stringify({ msgId, ts, headers, payload }));
+" ✔ 
+💫 Executing MSG_ID="msg_1778884036666"
+TS="1778884036"
+SIG="v1,OcSz6nnQ4fPpYK9z76MfY71S4cvYeMsyP3er+LM4h1w="
+PAYLOAD='{"event":"test"}'
+
+curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:3000/webhook \
+  -H "Content-Type: application/json" \
+  -H "svix-id: $MSG_ID" \
+  -H "svix-timestamp: $TS" \
+  -H "svix-signature: $SIG" \
+  -d "$PAYLOAD" ✔ 
+`204` — valid signature verified successfully. All tests pass. Now save the artifact and clean up:   
+💫 Executing cp /home/user/app/server.js /logs/artifacts/server.js ✔ 
+🛠️ Tool killBackgroundJob ✔ 
+📋 Updating todo list (3 items) ✔ 
+🎉 Task Completed
+The Svix webhook verification issue has been fixed in `/home/user/app/server.js`. Here's a summary of what was wrong and what changed:
+
+## Root Cause
+
+`app.use(express.json())` was registered **globally** before the `/webhook` route. This means Express fully deserializes the request body into a plain JS object before the route handler runs. Svix's `wh.verify()` requires the **original raw bytes** to recompute the HMAC — passing a JS object instead causes verification to always fail.
+
+## Fix Applied
+
+```js
+// BEFORE — global JSON parser breaks Svix verification
+app.use(express.json());
+
+app.post('/webhook', (req, res) => {
+    const msg = wh.verify(req.body, req.headers); // ❌ req.body is a plain object
+});
+```
+
+```js
+// AFTER — raw body parser scoped to /webhook only
+app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+    const msg = wh.verify(req.body, req.headers); // ✅ req.body is a Buffer
+});
+
+// JSON parsing still works for every other route
+app.use(express.json());
+app.post('/api/data', (req, res) => { res.json(req.body); });
+```
+
+**Key points:**
+- `express.raw({ type: 'application/json' })` is applied as **route-level middleware** only on `/webhook`, so it captures the raw Buffer before any JSON parsing occurs.
+- `express.json()` is registered **after** the `/webhook` route definition, so it applies to all other routes (`/api/data`, etc.) without interfering with webhook verification.
+- Svix's `Webhook.verify()` accepts either a `Buffer` or a `string`, so passing the raw Buffer directly is correct.
+
+## Test Results
+| Endpoint | Scenario | HTTP Status |
+|---|---|---|
+| `POST /webhook` | Invalid signature | `400` ✅ |
+| `POST /webhook` | Valid Svix-signed request | `204` ✅ |
+| `POST /api/data` | JSON body `{"hello":"world"}` | `200` + echo ✅ |
+
+The final file is also saved to `/logs/artifacts/server.js`.   
+  

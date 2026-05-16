@@ -1,0 +1,73 @@
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+   Building standardwebhooks==1.0.1
+Downloading pygments (1.2MiB)
+Downloading pydantic-core (1.9MiB)
+ Downloading pygments
+ Downloading pydantic-core
+      Built standardwebhooks==1.0.1
+Installed 27 packages in 9ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: anyio-4.13.0, json-ctrf-0.3.5
+collected 4 items
+
+tests/test_final_state.py .FFF                                           [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_script_execution _____________________________
+
+    def test_script_execution():
+        result = subprocess.run(
+            ["python3", "svix_task.py"],
+            cwd=PROJECT_DIR,
+            capture_output=True,
+            text=True
+        )
+>       assert result.returncode == 0, f"Script execution failed: {result.stderr}\n{result.stdout}"
+E       AssertionError: Script execution failed: Traceback (most recent call last):
+E           File "/home/user/project/svix_task.py", line 5, in <module>
+E             from svix.api import ApiException
+E         ImportError: cannot import name 'ApiException' from 'svix.api' (/root/.cache/uv/archive-v0/xpG1tbePTa0oR9CwjmH9Q/lib/python3.12/site-packages/svix/api/__init__.py)
+E         
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python3', 'svix_task.py'], returncode=1, stdout='', stderr='Traceback (most recent call last):...m \'svix.api\' (/root/.cache/uv/archive-v0/xpG1tbePTa0oR9CwjmH9Q/lib/python3.12/site-packages/svix/api/__init__.py)\n').returncode
+
+tests/test_final_state.py:21: AssertionError
+______________________ test_output_json_exists_and_valid _______________________
+
+    def test_output_json_exists_and_valid():
+>       assert os.path.isfile(OUTPUT_JSON), f"Output file not found at {OUTPUT_JSON}"
+E       AssertionError: Output file not found at /home/user/project/output.json
+E       assert False
+E        +  where False = <function isfile at 0xf54e51810220>('/home/user/project/output.json')
+E        +    where <function isfile at 0xf54e51810220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+tests/test_final_state.py:24: AssertionError
+_________________________ test_messages_exist_in_svix __________________________
+
+    def test_messages_exist_in_svix():
+>       with open(OUTPUT_JSON, "r") as f:
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/project/output.json'
+
+tests/test_final_state.py:35: FileNotFoundError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_script_exists
+FAILED tests/test_final_state.py::test_script_execution - AssertionError: Scr...
+FAILED tests/test_final_state.py::test_output_json_exists_and_valid - Asserti...
+FAILED tests/test_final_state.py::test_messages_exist_in_svix - FileNotFoundE...
+========================= 3 failed, 1 passed in 0.41s ==========================
